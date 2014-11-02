@@ -14,4 +14,8 @@ $collection->add(StockManagerRouting::ABOUT_KEY, new Route(StockManagerRouting::
 		'_controller' => 'MainStockManagerBundle:Routing:toAbout',
 )));
 
+$collection->add(StockManagerRouting::INSERT_CATEGORY_KEY, new Route(StockManagerRouting::INSERT_CATEGORY_URL, array(
+		'_controller' => 'MainStockManagerBundle:Routing:insertCategory',
+)));
+
 return $collection;
