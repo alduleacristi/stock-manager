@@ -1,0 +1,4 @@
+main_stock_manager:
+    resource: "@MainStockManagerBundle/Resources/config/routing.php"
+    prefix:   /
+

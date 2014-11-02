@@ -1,0 +1,6 @@
+{% extends '::base.html.twig' %}
+
+{% block navbar %}
+	<li><a href="#">Login</a></li>
+	<li><a href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::ABOUT_KEY')) }}">About</a></li>
+{% endblock %}
