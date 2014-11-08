@@ -7,8 +7,9 @@ use Symfony\Component\Form\AbstractType;
 
 class InsertCategoryForm extends AbstractType{
 	public function buildForm(FormBuilderInterface $builder, array $options){
-		$builder->add('firstName')
-				 ->add('save', 'submit', array('label' => 'Insert category'));
+		$builder->add('categoryName')
+				->add('description', 'textarea')
+				->add('save', 'submit', array('label' => 'Insert category'));
 	}
 	
 	public function getName()
