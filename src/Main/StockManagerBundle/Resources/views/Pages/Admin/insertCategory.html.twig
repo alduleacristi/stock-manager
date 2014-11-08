@@ -1,0 +1,30 @@
+{% extends '::admin.html.twig' %}
+
+{% block page_title %}
+		<h1 class="page-header">Insert a new category</h1>
+{% endblock %}
+{% block content %}
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<h3 class="panel-title">Insert category</h3>
+		</div>
+		<br/>
+		{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+		    <table align = "center" style="border-spacing: 10px;">
+			<tr>
+				<td>{{ form_widget(form.categoryName, {'attr': {'class': 'form-control','placeholder': 'Category name'}})}}</td>
+				<td style="color:red">{{ form_errors(form.categoryName) }}</td>
+		    </tr>
+		    <tr>
+		    	<td>{{ form_widget(form.description, {'attr': {'class': 'form-control','placeholder': 'Category description', 'style': 'resize: none'}}) }}</td>
+		    	<td style="color:red">{{ form_errors(form.description) }}</td>
+		    </tr>
+		    	</td>
+		    
+		    </table>
+		 
+			<br/>
+			{{ form_widget(form.save, {'attr': {'class': 'btn btn-default','style': 'margin-left:43%;background-color:#87BAE5'}}) }}
+		{{ form_end(form) }}
+	</div>
+{% endblock %}
