@@ -9,13 +9,22 @@ $collection = new RouteCollection();
 $collection->add(StockManagerRouting::HOME_KEY, new Route(StockManagerRouting::HOME_URL, array(
     '_controller' => 'MainStockManagerBundle:Routing:toIndex',
 )));
+$collection->add(StockManagerRouting::HOME_ADMIN_KEY, new Route(StockManagerRouting::HOME_ADMIN_URL, array(
+		'_controller' => 'MainStockManagerBundle:Routing:toAdminIndex',
+)));
 
 $collection->add(StockManagerRouting::ABOUT_KEY, new Route(StockManagerRouting::ABOUT_URL, array(
 		'_controller' => 'MainStockManagerBundle:Routing:toAbout',
 )));
 
 $collection->add(StockManagerRouting::INSERT_CATEGORY_KEY, new Route(StockManagerRouting::INSERT_CATEGORY_URL, array(
-		'_controller' => 'MainStockManagerBundle:Routing:insertCategory',
+		'_controller' => 'MainStockManagerBundle:Routing:insertCategoryForm',
+)));
+$collection->add(StockManagerRouting::INSERT_PRODUCT_KEY, new Route(StockManagerRouting::INSERT_PRODUCT_URL, array(
+		'_controller' => 'MainStockManagerBundle:Routing:insertProductForm',
+)));
+$collection->add(StockManagerRouting::INSERT_PRODUCER_KEY, new Route(StockManagerRouting::INSERT_PRODUCER_URL, array(
+		'_controller' => 'MainStockManagerBundle:Routing:insertProducerForm',
 )));
 
 return $collection;
