@@ -7,9 +7,36 @@
 {% block content %}
 	<div class="panel panel-primary">
 		<div class="panel-heading">
-			<h3 class="panel-title">Insert product</h3>
+			<h3 class="panel-title">Insert producer</h3>
 		</div>
 		<br/>
+		{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+		    <table align = "center" style="border-spacing: 10px;">
+			<tr>
+				<td>{{ form_widget(form.producerName, {'attr': {'class': 'form-control','placeholder': 'Producer name'}})}}</td>
+				<td style="color:red">{{ form_errors(form.producerName) }}</td>
+		    </tr>
+		    <tr>
+		    	<td>{{ form_widget(form.adress, {'attr': {'class': 'form-control','placeholder': 'Adress', 'style': 'resize: none'}}) }}</td>
+		    	<td style="color:red">{{ form_errors(form.adress) }}</td>
+		    </tr>
+		    <tr>
+		    	<td>{{ form_widget(form.email, {'attr': {'class': 'form-control','placeholder': 'Email', 'style': 'resize: none'}}) }}</td>
+		    	<td style="color:red">{{ form_errors(form.email) }}</td>
+		    </tr>
+		    <tr>
+		    	<td>{{ form_widget(form.url, {'attr': {'class': 'form-control','placeholder': 'Url', 'style': 'resize: none'}}) }}</td>
+		    	<td style="color:red">{{ form_errors(form.url) }}</td>
+		    </tr>
+		     <tr>
+		    	<td>{{ form_widget(form.phone, {'attr': {'class': 'form-control','placeholder': 'Phone', 'style': 'resize: none'}}) }}</td>
+		    	<td style="color:red">{{ form_errors(form.phone) }}</td>
+		    </tr>
+		    </table>
+		 
+			<br/>
+			{{ form_widget(form.save, {'attr': {'class': 'btn btn-default','style': 'margin-left:43%;background-color:#87BAE5'}}) }}
+		{{ form_end(form) }}
 
 	</div>
 {% endblock %}
