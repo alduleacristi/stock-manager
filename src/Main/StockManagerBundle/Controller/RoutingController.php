@@ -9,6 +9,10 @@ use Main\StockManagerBundle\StockManagerDTO\UserDTO;
 use Main\StockManagerBundle\StockManagerDTO\CategoryDTO;
 use Main\StockManagerBundle\Forms\InsertProductForm;
 use Main\StockManagerBundle\StockManagerDTO\ProductDTO;
+use Main\StockManagerBundle\Forms\InsertProducerForm;
+use Main\StockManagerBundle\StockManagerDTO\ProducerDTO;
+use Main\StockManagerBundle\Forms\InsertIngredientForm;
+use Main\StockManagerBundle\StockManagerDTO\IngredientDTO;
 use Symfony\Component\HttpFoundation\Request;
 
 class RoutingController extends Controller
@@ -62,16 +66,27 @@ class RoutingController extends Controller
     
     public function insertProducerFormAction(Request $request)
     {
-//     	$productDTO = new ProductDTO();
+     	$producerDTO = new ProducerDTO();
     
-//     	$form = $this->createForm(new InsertProductForm(), $productDTO);
+     	$form = $this->createForm(new InsertProducerForm(), $producerDTO);
+    	$form->handleRequest($request);
     
-//     	$form->handleRequest($request);
+     	if ($form->isValid()) {
+      	}
     
-//     	if ($form->isValid()) {
+    	return $this->render('MainStockManagerBundle:Pages/Admin:insertProducer.html.twig', array('form' => $form->createView()));
+    }
     
-//     	}
+    public function insertIngredientFormAction(Request $request)
+    {
+    	$ingredientDTO = new IngredientDTO();
     
-    	return $this->render('MainStockManagerBundle:Pages/Admin:insertProducer.html.twig', array());
+    	$form = $this->createForm(new InsertIngredientForm(), $ingredientDTO);
+    	$form->handleRequest($request);
+    
+    	if ($form->isValid()) {
+    	}
+    
+    	return $this->render('MainStockManagerBundle:Pages/Admin:insertIngredient.html.twig', array('form' => $form->createView()));
     }
 }
