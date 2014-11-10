@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Main\StockManagerBundle\Entity\Producer" table="producer">
+    <unique-constraints>
+      <unique-constraint name="id_UNIQUE" columns="id"/>
+    </unique-constraints>
+    <id name="id" type="bigint" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="producername" type="string" column="producerName" length="15" nullable="false"/>
+    <field name="adress" type="string" column="adress" length="25" nullable="false"/>
+    <field name="email" type="string" column="email" length="25" nullable="false"/>
+    <field name="url" type="string" column="url" length="255" nullable="true"/>
+    <field name="phone" type="string" column="phone" length="15" nullable="true"/>
+  </entity>
+</doctrine-mapping>

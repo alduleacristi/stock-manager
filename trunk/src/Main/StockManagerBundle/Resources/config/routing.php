@@ -26,5 +26,8 @@ $collection->add(StockManagerRouting::INSERT_PRODUCT_KEY, new Route(StockManager
 $collection->add(StockManagerRouting::INSERT_PRODUCER_KEY, new Route(StockManagerRouting::INSERT_PRODUCER_URL, array(
 		'_controller' => 'MainStockManagerBundle:Routing:insertProducerForm',
 )));
+$collection->add(StockManagerRouting::INSERT_INGREDIENT_KEY, new Route(StockManagerRouting::INSERT_INGREDIENT_URL, array(
+		'_controller' => 'MainStockManagerBundle:Routing:insertIngredientForm',
+)));
 
 return $collection;

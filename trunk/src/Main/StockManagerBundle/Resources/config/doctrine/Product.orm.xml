@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Main\StockManagerBundle\Entity\Product" table="product">
+    <indexes>
+      <index name="fk_product_caegory_idx" columns="idCategory"/>
+      <index name="fk_product_producer_idx" columns="idProducer"/>
+    </indexes>
+    <unique-constraints>
+      <unique-constraint name="id_UNIQUE" columns="id"/>
+    </unique-constraints>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="productname" type="string" column="productName" length="15" nullable="false"/>
+    <field name="manufacturedate" type="date" column="manufactureDate" nullable="true"/>
+    <field name="expiringdate" type="date" column="expiringdate" nullable="true"/>
+    <field name="price" type="float" column="price" precision="10" scale="0" nullable="false"/>
+    <field name="adition" type="float" column="adition" precision="10" scale="0" nullable="false"/>
+    <field name="observation" type="string" column="observation" length="500" nullable="true"/>
+    <many-to-one field="idproducer" target-entity="Producer">
+      <join-columns>
+        <join-column name="idProducer" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idcategory" target-entity="Category">
+      <join-columns>
+        <join-column name="idCategory" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-many field="idingredient" target-entity="Ingredient" inversed-by="idproduct">
+      <join-table name="product_composition">
+        <join-columns>
+          <join-column name="idProduct" referenced-column-name="id"/>
+        </join-columns>
+        <inverse-join-columns>
+          <join-column name="idIngredient" referenced-column-name="id"/>
+        </inverse-join-columns>
+      </join-table>
+    </many-to-many>
+  </entity>
+</doctrine-mapping>
