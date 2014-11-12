@@ -9,6 +9,6 @@
     </id>
     <field name="categoryname" type="string" column="categoryName" length="15" nullable="false"/>
     <field name="description" type="string" column="description" length="500" nullable="true"/>
-    <field name="iduser" type="string" column="idUser" length="45" nullable="false"/>
+    <one-to-many field="products" target-entity="Product" mapped-by="idcategory" />
   </entity>
 </doctrine-mapping>

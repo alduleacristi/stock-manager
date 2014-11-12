@@ -17,14 +17,14 @@
     <field name="price" type="float" column="price" precision="10" scale="0" nullable="false"/>
     <field name="adition" type="float" column="adition" precision="10" scale="0" nullable="false"/>
     <field name="observation" type="string" column="observation" length="500" nullable="true"/>
+    <many-to-one field="idcategory" target-entity="Category" inversed-by="products">
+      <join-columns>
+        <join-column name="idCategory" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
     <many-to-one field="idproducer" target-entity="Producer">
       <join-columns>
         <join-column name="idProducer" referenced-column-name="id"/>
-      </join-columns>
-    </many-to-one>
-    <many-to-one field="idcategory" target-entity="Category">
-      <join-columns>
-        <join-column name="idCategory" referenced-column-name="id"/>
       </join-columns>
     </many-to-one>
     <many-to-many field="idingredient" target-entity="Ingredient" inversed-by="idproduct">
