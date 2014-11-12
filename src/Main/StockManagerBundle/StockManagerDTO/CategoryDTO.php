@@ -2,6 +2,7 @@
 namespace Main\StockManagerBundle\StockManagerDTO;
 
 use Symfony\Component\Validator\Constraints as Assert;
+use Main\StockManagerBundle\Entity\Category;
 
 class CategoryDTO{
 	private $id;
@@ -25,6 +26,15 @@ class CategoryDTO{
 	 * )
 	 */
 	private $description;
+	
+	public function convertToCategory(){
+		$category = new Category();
+		
+		$category->setCategoryname($this->categoryName);
+		$category->setDescription($this->description);
+		
+		return $category;
+	}
 	
 	public function __get($name){
 		return $this->$name;
