@@ -9,6 +9,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Category
 {
+	public function __construct()
+	{
+		$this->products = new \Doctrine\Common\Collections\ArrayCollection();
+	}
+	
     /**
      * @var string
      */
@@ -20,14 +25,11 @@ class Category
     private $description;
 
     /**
-     * @var string
-     */
-    private $iduser;
-
-    /**
      * @var integer
      */
     private $id;
+    
+    private $products;
 
 
     /**
@@ -77,29 +79,6 @@ class Category
     }
 
     /**
-     * Set iduser
-     *
-     * @param string $iduser
-     * @return Category
-     */
-    public function setIduser($iduser)
-    {
-        $this->iduser = $iduser;
-
-        return $this;
-    }
-
-    /**
-     * Get iduser
-     *
-     * @return string 
-     */
-    public function getIduser()
-    {
-        return $this->iduser;
-    }
-
-    /**
      * Get id
      *
      * @return integer 
@@ -107,5 +86,20 @@ class Category
     public function getId()
     {
         return $this->id;
+    }
+    
+    public function getProducts(){
+    	return $this->products;
+    }
+    
+    public function addProducts(\Main\StockManagerBundle\Entity\Product $product){
+    	$this->products[] = $product;
+    	
+    	return $this;
+    }
+    
+    public function removeProducts(\Main\StockManagerBundle\Entity\Product $product)
+    {
+    	$this->products->removeElement($product);
     }
 }
