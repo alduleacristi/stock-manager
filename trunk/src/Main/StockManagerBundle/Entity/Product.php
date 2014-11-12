@@ -45,14 +45,14 @@ class Product
     private $id;
 
     /**
-     * @var \Main\StockManagerBundle\Entity\Producer
-     */
-    private $idproducer;
-
-    /**
      * @var \Main\StockManagerBundle\Entity\Category
      */
     private $idcategory;
+
+    /**
+     * @var \Main\StockManagerBundle\Entity\Producer
+     */
+    private $idproducer;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -216,29 +216,6 @@ class Product
     }
 
     /**
-     * Set idproducer
-     *
-     * @param \Main\StockManagerBundle\Entity\Producer $idproducer
-     * @return Product
-     */
-    public function setIdproducer(\Main\StockManagerBundle\Entity\Producer $idproducer = null)
-    {
-        $this->idproducer = $idproducer;
-
-        return $this;
-    }
-
-    /**
-     * Get idproducer
-     *
-     * @return \Main\StockManagerBundle\Entity\Producer 
-     */
-    public function getIdproducer()
-    {
-        return $this->idproducer;
-    }
-
-    /**
      * Set idcategory
      *
      * @param \Main\StockManagerBundle\Entity\Category $idcategory
@@ -259,6 +236,29 @@ class Product
     public function getIdcategory()
     {
         return $this->idcategory;
+    }
+
+    /**
+     * Set idproducer
+     *
+     * @param \Main\StockManagerBundle\Entity\Producer $idproducer
+     * @return Product
+     */
+    public function setIdproducer(\Main\StockManagerBundle\Entity\Producer $idproducer = null)
+    {
+        $this->idproducer = $idproducer;
+
+        return $this;
+    }
+
+    /**
+     * Get idproducer
+     *
+     * @return \Main\StockManagerBundle\Entity\Producer 
+     */
+    public function getIdproducer()
+    {
+        return $this->idproducer;
     }
 
     /**
