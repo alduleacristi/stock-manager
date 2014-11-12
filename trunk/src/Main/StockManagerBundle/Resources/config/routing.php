@@ -30,4 +30,11 @@ $collection->add(StockManagerRouting::INSERT_INGREDIENT_KEY, new Route(StockMana
 		'_controller' => 'MainStockManagerBundle:Routing:insertIngredientForm',
 )));
 
+$collection->add(StockManagerRouting::VIEW_CATEGORY_KEY, new Route(StockManagerRouting::VIEW_CATEGORY_URL, array(
+		'_controller' => 'MainStockManagerBundle:Routing:viewCategory','offset' => 1
+)));
+$collection->add(StockManagerRouting::VIEW_PRODUCT_KEY, new Route(StockManagerRouting::VIEW_PRODUCT_URL, array(
+		'_controller' => 'MainStockManagerBundle:Routing:viewProduct','offset' => 1
+)));
+
 return $collection;
