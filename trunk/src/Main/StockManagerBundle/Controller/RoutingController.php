@@ -14,6 +14,7 @@ use Main\StockManagerBundle\StockManagerDTO\ProducerDTO;
 use Main\StockManagerBundle\Forms\InsertIngredientForm;
 use Main\StockManagerBundle\StockManagerDTO\IngredientDTO;
 use Symfony\Component\HttpFoundation\Request;
+use Main\StockManagerBundle\Common\StockManagerPaginator;
 
 class RoutingController extends Controller
 {
@@ -43,7 +44,13 @@ class RoutingController extends Controller
     	$form->handleRequest($request);
     	
     	if ($form->isValid()) {
+    		$categoryService = $this->get('category_service');
     		
+    		$category = $categoryDTO->convertToCategory();
+    		$categoryService->insertCategory($category);
+    		
+			
+    		return $this->redirect($this->generateurl(StockManagerRouting::VIEW_CATEGORY_KEY));
     	}
     	
     	return $this->render('MainStockManagerBundle:Pages/Admin:insertCategory.html.twig', array('form' => $form->createView()));
@@ -88,5 +95,46 @@ class RoutingController extends Controller
     	}
     
     	return $this->render('MainStockManagerBundle:Pages/Admin:insertIngredient.html.twig', array('form' => $form->createView()));
+    }
+    
+    public function viewCategoryAction($offset)
+    {
+    	$categoryService = $this->get('category_service');
+    	$categorys = $categoryService->getAllCategory();
+    	
+    	$limit = 7;
+    	$midrange = 3;
+    	
+    	$itemsCount = sizeof($categorys);
+    	$resultCategory = array();
+    	$n = $offset * $limit;
+    	for($i=$offset*$limit-$limit;$i<$n && $i<$itemsCount;$i++)
+    		$resultCategory[$i] = $categorys[$i];
+    	
+    	$paginator = new StockManagerPaginator($itemsCount, $offset , $limit, $midrange);
+    	 
+    
+    	return $this->render('MainStockManagerBundle:Pages/Admin:viewCategory.html.twig', array('categorys' => $resultCategory, 'paginator' => $paginator));
+    }
+    
+    public function viewProductAction($category,$offset)
+    {
+    	$categoryService = $this->get('category_service');
+    	$categoryObject = $categoryService->getCategoryById($category);
+		$products = $categoryObject->getProducts();
+    	
+    	$limit = 7;
+    	$midrange = 3;
+    	 
+    	$itemsCount = sizeof($products);
+    	$resultProducts = array();
+    	$n = $offset * $limit;
+    	for($i=$offset*$limit-$limit;$i<$n && $i<$itemsCount;$i++)
+    		$resultProducts[$i] = $products[$i];
+    		 
+    		$paginator = new StockManagerPaginator($itemsCount, $offset , $limit, $midrange);
+    
+    
+    		return $this->render('MainStockManagerBundle:Pages/Admin:viewProduct.html.twig', array('products' => $resultProducts, 'paginator' => $paginator, 'category' => $category));
     }
 }
