@@ -3,11 +3,12 @@
 namespace Main\StockManagerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * User
  */
-class User
+class User implements UserInterface, \Serializable
 {
     /**
      * @var string
@@ -23,6 +24,12 @@ class User
      * @var string
      */
     private $email;
+    
+    /**
+     * 
+     * @var string
+     */
+    private $username;
 
     /**
      * @var string
@@ -34,10 +41,54 @@ class User
      */
     private $id;
 
-    /**
-     * @var \Main\StockManagerBundle\Entity\Role
+     /**
+     * @var \Doctrine\Common\Collections\Collection
      */
-    private $idrol;
+    private $roles;
+    
+    public function __construct(){
+    	$this->roles = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Add role
+     *
+     * @param \Main\StockManagerBundle\Entity\Role $role
+     * @return Product
+     */
+    public function addIdingredient(\Main\StockManagerBundle\Entity\Role $role)
+    {
+    	$this->roles[] = $role;
+    
+    	return $this;
+    }
+    
+    /**
+     * Remove role
+     *
+     * @param \Main\StockManagerBundle\Entity\Role $role
+     */
+    public function removeIdingredient(\Main\StockManagerBundle\Entity\Role $role)
+    {
+    	$this->idingredient->removeElement($role);
+    }
+    
+    /**
+     * Get roles
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRoles()
+    {
+    	$rolesArray = $this->roles->toArray();
+    	$stringRoles = array();
+    	
+    	for($i=0;$i<sizeof($rolesArray);$i++){
+    		$stringRoles[$i] = $rolesArray[$i]->getRolename();
+    	}
+    	
+    	return $stringRoles;
+    }
 
 
     /**
@@ -121,6 +172,15 @@ class User
 
         return $this;
     }
+    
+    public function getUsername(){
+    	return $this->username;
+    }
+    
+    public function getSalt()
+    {
+    	return null;
+    }
 
     /**
      * Get password
@@ -141,27 +201,34 @@ class User
     {
         return $this->id;
     }
-
-    /**
-     * Set idrol
-     *
-     * @param \Main\StockManagerBundle\Entity\Role $idrol
-     * @return User
-     */
-    public function setIdrol(\Main\StockManagerBundle\Entity\Role $idrol = null)
+    
+    public function eraseCredentials()
     {
-        $this->idrol = $idrol;
-
-        return $this;
     }
-
+    
     /**
-     * Get idrol
-     *
-     * @return \Main\StockManagerBundle\Entity\Role 
+     * @see \Serializable::serialize()
      */
-    public function getIdrol()
+    public function serialize()
     {
-        return $this->idrol;
+    	return serialize(array(
+    			$this->id,
+    			$this->username,
+    			$this->password,
+    			// see section on salt below
+    			// $this->salt,
+    	));
+    }
+    
+    /**
+     * @see \Serializable::unserialize()
+     */
+    public function unserialize($serialized)
+    {
+    	list (
+    			$this->id,
+    			$this->username,
+    			$this->password,
+    	) = unserialize($serialized);
     }
 }
