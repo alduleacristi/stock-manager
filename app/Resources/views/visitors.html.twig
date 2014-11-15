@@ -1,6 +1,10 @@
 {% extends '::base.html.twig' %}
 
 {% block navbar %}
-	<li><a href="#">Login</a></li>
+{% if app.user %}
+    <li><a href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::LOGOUT_KEY')) }}">Logout</a></li>
+ {% else %}
+   	<li><a href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::LOGIN_KEY')) }}">Login</a></li>
+ {% endif %}
 	<li><a href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::ABOUT_KEY')) }}">About</a></li>
 {% endblock %}
