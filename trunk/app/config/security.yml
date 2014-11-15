@@ -1,12 +1,26 @@
 security:
-    providers:
-        in_memory:
-            memory: ~
-
     firewalls:
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
-
-        default:
+        secured_area:
+            pattern:   ^/
             anonymous: ~
+            form_login:
+                login_path: login
+                check_path: login_check
+                default_target_path: /admin/index
+            logout:
+                path:   /logout
+                target: /index
+
+    access_control:
+        - { path: ^/admin/, roles: ROLE_ADMIN }
+        # Include the following line to also secure the /admin path itself
+        # - { path: ^/admin$, roles: ROLE_ADMIN }
+
+    providers:
+        administrators:
+            entity: 
+             class: MainStockManagerBundle:User 
+             property: username 
+
+    encoders:
+       Main\StockManagerBundle\Entity\User : plaintext
