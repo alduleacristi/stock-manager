@@ -1,0 +1,45 @@
+{% extends '::admin.html.twig' %}
+{% block page_title %}
+{% endblock %}
+{% block content %}
+	<div class="panel panel-default">
+  		<div class="panel-heading">Ingredients</div>
+  		
+  		<table class="table">
+    		<tr>
+  				<th>#</th>
+  				<th>Name</th>
+  			</tr>
+  			{% for item in ingredients %}
+  			<tr>
+  				<td>{{ item.id }} </td>
+  				<td>{{ item.ingredientname }} </td>
+  				<td>
+  					<form action="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::DROP_INGREDIENT_KEY'), {  'ingredient':item.id  }) }}">
+  						<input type="submit" class="btn btn-default" style='background-color:#87BAE5' value="Drop producer"/>
+  					</form>
+  				</td>
+  			</tr>
+  			{% endfor %}
+  		</table>
+  	</div>
+	
+	<div align="center">
+    <ul class="pagination">
+        {% if paginator.currentpage != 1 %}
+            <li> <a class="previous" href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::VIEW_INGREDIENTS_KEY'), {  'offset': paginator.currentpage-1 }) }}">Previous</a>
+        {% endif %}
+        {% for i in 1..paginator.numpages%}
+            {%  if(i==1 or i==paginator.numpages or i in paginator.range) %}
+                {% if i==paginator.currentpage %}
+                    <li><a class="active" href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::VIEW_INGREDIENTS_KEY'), {  'offset': i })}}">{{i}}</a></li>
+                {% else %}
+                <li><a href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::VIEW_INGREDIENTS_KEY'), {  'offset': i }) }}"> {{i}}</a></li>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+        <li> <a class="next" href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::VIEW_INGREDIENTS_KEY'), {  'offset': paginator.currentpage+1 }) }}">Next</a>
+    </ul>
+</div>
+  	
+{% endblock %}
