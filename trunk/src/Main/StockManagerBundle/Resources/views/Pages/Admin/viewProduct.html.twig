@@ -29,7 +29,7 @@
                 {% if i==paginator.currentpage %}
                     <li><a class="active" href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::VIEW_PRODUCT_KEY'), {  'category':category, 'offset': i })}}">{{i}}</a></li>
                 {% else %}
-                <li><a href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::VIEW_PRODUCT_KEY'), {  'category':category, s'offset': i }) }}"> {{i}}</a></li>
+                <li><a href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::VIEW_PRODUCT_KEY'), {  'category':category, 'offset': i }) }}"> {{i}}</a></li>
                 {% endif %}
             {% endif %}
         {% endfor %}

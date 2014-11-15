@@ -1,0 +1,47 @@
+{% extends '::admin.html.twig' %}
+{% block page_title %}
+{% endblock %}
+{% block content %}
+	<div class="panel panel-default">
+  		<div class="panel-heading">Producer detail</div>
+  			<ul class="list-group">
+  				<li class="list-group-item">
+  					<div class="panel panel-default">
+  						<div class="panel-heading">Producer name</div>
+  						<div align="center">{{ producer.producername }}</div>
+  					</div>
+  				</li>
+  				<li class="list-group-item">
+  					<div class="panel panel-default">
+  						<div class="panel-heading">Producer adress</div>
+  						<div align="center">{{ producer.adress }}</div>
+  					</div>
+  				</li>
+  				<li class="list-group-item">
+  					<div class="panel panel-default">
+  						<div class="panel-heading">Producer email</div>
+  						<div align="center">{{ producer.email }}</div>
+  					</div>
+  				</li>
+  				<li class="list-group-item">
+  					<div class="panel panel-default">
+  						<div class="panel-heading">Producer url</div>
+  						<div align="center">{{ producer.url }}</div>
+  					</div>
+  				</li>
+  				<li class="list-group-item">
+  					<div class="panel panel-default">
+  						<div class="panel-heading">Producer phone</div>
+  						<div align="center">{{ producer.phone }}</div>
+  					</div>
+  				</li>
+  				</div>
+  			</ul>
+  			<div align="center">
+  					<form action="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::VIEW_PRODUCER_KEY')) }}">
+  						<input type="submit" class="btn btn-default" style='background-color:#87BAE5' value="Go back"/>
+  					</form>
+  			</div>
+  	</div>
+  	
+{% endblock %}
