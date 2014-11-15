@@ -4,12 +4,12 @@
 	<a class="navbar-brand" href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::HOME_ADMIN_KEY')) }}">StockManager</a>
 {% endblock %}
 {% block navbar %}
-	<li><a href="#">Logout</a></li>
-	<li><a href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::ABOUT_KEY')) }}">About</a></li>
+	<li><a href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::LOGOUT_KEY')) }}">Logout</a></li>
 {% endblock %}
 
 {% block sidebar_content %}
 	<li><a href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::INSERT_CATEGORY_KEY')) }}">Insert category</a></li>
 	<li><a href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::INSERT_PRODUCT_KEY')) }}">Insert product</a></li>
 	<li><a href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::INSERT_PRODUCER_KEY')) }}">Insert producer</a></li>
+	<li><a href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::INSERT_INGREDIENT_KEY')) }}">Insert ingredient</a></li>
 {% endblock %}
