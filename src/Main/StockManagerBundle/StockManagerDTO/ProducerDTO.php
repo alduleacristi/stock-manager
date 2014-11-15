@@ -2,6 +2,7 @@
 namespace Main\StockManagerBundle\StockManagerDTO;
 
 use Symfony\Component\Validator\Constraints as Assert;
+use Main\StockManagerBundle\Entity\Producer;
 
 class ProducerDTO{
 	
@@ -42,6 +43,20 @@ class ProducerDTO{
 	
 	private $url;
 	private $phone;
+	private $id;
+	
+	public function convertToProducer(){
+		$producer = new Producer();
+		
+		$producer->setProducername($this->producerName);
+		$producer->setAdress($this->adress);
+		$producer->setEmail($this->email);
+		$producer->setUrl($this->url);
+		$producer->setPhone($this->phone);
+		$producer->setId($this->id);
+		
+		return $producer;
+	}
 
 	public function __get($name){
 		return $this->$name;

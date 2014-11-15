@@ -4,6 +4,7 @@ namespace Main\StockManagerBundle\StockManagerDTO;
 use Symfony\Component\Validator\Constraints as Assert;
 use Main\StockManagerBundle\Validator\Constraints as FormAssert;
 use Symfony\Component\Validator\Constraints\Date;
+use Main\StockManagerBundle\Entity\Product;
 
 class ProductDTO{
 	/**
@@ -67,6 +68,18 @@ class ProductDTO{
 	 * @Assert\NotNull()
 	 */
 	private $category;
+	
+	public function convertToProduct(){
+		$product = new product();
+		
+		$product->setProductname($this->productName);
+		$product->setManufacturedate($this->manufactureDate);
+		$product->setExpiringdate($this->expiringdate);
+		$product->setprice($this->productPrice);
+		$product->setAdition($this->productAddition);
+		$product->setObservation($this->description);
+		$product->setIdcategory($this->category);
+	}
 	
 	public function __get($name){
 		return $this->$name;
