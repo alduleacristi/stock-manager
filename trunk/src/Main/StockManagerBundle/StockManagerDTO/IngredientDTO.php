@@ -2,6 +2,7 @@
 namespace Main\StockManagerBundle\StockManagerDTO;
 
 use Symfony\Component\Validator\Constraints as Assert;
+use Main\StockManagerBundle\Entity\Ingredient;
 
 class IngredientDTO{
 	
@@ -15,6 +16,13 @@ class IngredientDTO{
 	 * ) 	
 	 */
 	private $ingredientName;
+	
+	public function convertToIngredient(){
+		$ingredient = new Ingredient();
+		$ingredient->setIngredientname($this->ingredientName);
+		
+		return $ingredient;
+	}
 	
 	public function __get($name){
 		return $this->$name;
