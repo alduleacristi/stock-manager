@@ -70,3 +70,18 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+    
+# Services Configuration
+services:
+    category_service:
+        class: Main\StockManagerBundle\Services\CategoryService
+        arguments: ["@doctrine.orm.entity_manager"]
+    product_service:
+        class: Main\StockManagerBundle\Services\ProductService
+        arguments: ["@doctrine.orm.entity_manager"] 
+    producer_service:
+        class: Main\StockManagerBundle\Services\ProducerService
+        arguments: ["@doctrine.orm.entity_manager"]
+    ingredient_service:
+        class: Main\StockManagerBundle\Services\IngredientService
+        arguments: ["@doctrine.orm.entity_manager"]      
