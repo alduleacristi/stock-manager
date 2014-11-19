@@ -35,6 +35,9 @@ $collection->add(StockManagerRouting::INSERT_PRODUCER_KEY, new Route(StockManage
 $collection->add(StockManagerRouting::INSERT_INGREDIENT_KEY, new Route(StockManagerRouting::INSERT_INGREDIENT_URL, array(
 		'_controller' => 'MainStockManagerBundle:Routing:insertIngredientForm',
 )));
+$collection->add(StockManagerRouting::INSERT_PRODUCT_INGREDIENT_KEY, new Route(StockManagerRouting::INSERT_PRODUCT_INGREDIENT_URL, array(
+		'_controller' => 'MainStockManagerBundle:Routing:insertProductIngredientForm',
+)));
 
 $collection->add(StockManagerRouting::VIEW_CATEGORY_KEY, new Route(StockManagerRouting::VIEW_CATEGORY_URL, array(
 		'_controller' => 'MainStockManagerBundle:Routing:viewCategory','offset' => 1
@@ -52,12 +55,21 @@ $collection->add(StockManagerRouting::VIEW_INGREDIENTS_KEY, new Route(StockManag
 $collection->add(StockManagerRouting::VIEW_PRODUCER_DETAILS_KEY, new Route(StockManagerRouting::VIEW_PRODUCER_DETAILS_URL, array(
 		'_controller' => 'MainStockManagerBundle:Routing:viewProducerDetails'
 )));
+$collection->add(StockManagerRouting::VIEW_PRODUCT_INGREDIENT_KEY, new Route(StockManagerRouting::VIEW_PRODUCT_INGREDIENT_URL, array(
+		'_controller' => 'MainStockManagerBundle:Routing:viewProductIngredient'
+)));
 
 $collection->add(StockManagerRouting::DROP_PRODUCER_KEY, new Route(StockManagerRouting::DROP_PRODUCER_URL, array(
 		'_controller' => 'MainStockManagerBundle:Routing:dropProducer'
 )));
 $collection->add(StockManagerRouting::DROP_INGREDIENT_KEY, new Route(StockManagerRouting::DROP_INGREDIENT_URL, array(
 		'_controller' => 'MainStockManagerBundle:Routing:dropIngredient'
+)));
+$collection->add(StockManagerRouting::DROP_CATEGORY_KEY, new Route(StockManagerRouting::DROP_CATEGORY_URL, array(
+		'_controller' => 'MainStockManagerBundle:Routing:dropCategory'
+)));
+$collection->add(StockManagerRouting::DROP_PRODUCT_INGREDIENT_KEY, new Route(StockManagerRouting::DROP_PRODUCT_INGREDIENT_URL, array(
+		'_controller' => 'MainStockManagerBundle:Routing:dropProductIngredient'
 )));
 
 $collection->add(StockManagerRouting::UPDATE_PRODUCER_KEY, new Route(StockManagerRouting::UPDATE_PRODUCER_URL, array(

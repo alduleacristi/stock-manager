@@ -6,7 +6,27 @@ use Main\StockManagerBundle\StockManagerDTO\ProductDTO;
 use Symfony\Component\Form\AbstractType;
 
 class InsertProductForm extends AbstractType{
+	private $categoryService;
+	private $producerService;
+	
+	public function __construct($categoryService,$producerService){
+		$this->categoryService = $categoryService;
+		$this->producerService = $producerService;
+	}
+	
 	public function buildForm(FormBuilderInterface $builder, array $options){
+		$categorys = $this->categoryService->getAllCategory();
+		$arrayCategory = array();
+		for($i=0;$i<sizeof($categorys);$i++){
+			$arrayCategory[$categorys[$i]->getId()] = $categorys[$i]->getCategoryname();
+		}
+		
+		$producers = $this->producerService->getAllProducers();
+		$arrayProducer = array();
+		for($i=0;$i<sizeof($producers);$i++){
+			$arrayProducer[$producers[$i]->getId()] = $producers[$i]->getProducername();
+		}
+		
 		$builder->add('productName')
 		->add('productPrice')
 		->add('productAddition')
@@ -20,7 +40,11 @@ class InsertProductForm extends AbstractType{
 		))
 		->add('category', 'choice', array(
 				'empty_value' => 'Select a category',
-				'choices' => array('m' => 'Male', 'f' => 'Female')
+				'choices' => $arrayCategory
+		))
+		->add('producer', 'choice', array(
+				'empty_value' => 'Select a producer',
+				'choices' => $arrayProducer
 		))
 		->add('description', 'textarea')
 		->add('save', 'submit', array('label' => 'Insert product'));

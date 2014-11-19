@@ -13,7 +13,7 @@
 		{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 		    <table align = "center" style="border-spacing: 10px;">
 			<tr>
-				<td>{{ form_widget(form.productName, {'attr': {'class': 'form-control','placeholder': 'Category name'}})}}</td>
+				<td>{{ form_widget(form.productName, {'attr': {'class': 'form-control','placeholder': 'Product name'}})}}</td>
 				<td style="color:red">{{ form_errors(form.productName) }}</td>
 		    </tr>
 		    <tr>
@@ -39,7 +39,11 @@
 		    	<td style="color:red">{{ form_errors(form.expiringDate) }}</td>
 		    </tr>
 		    <tr>
-		    	<td>{{ form_widget(form.category, {'attr': {'class': 'form-control','placeholder': 'Manufacture date (YYYY-MM-DD)'}}) }}</td>
+		    	<td>{{ form_widget(form.category, {'attr': {'class': 'form-control'}}) }}</td>
+		    	<td style="color:red">{{ form_errors(form.category) }}</td>
+		    </tr>
+		    <tr>
+		    	<td>{{ form_widget(form.producer, {'attr': {'class': 'form-control'}}) }}</td>
 		    	<td style="color:red">{{ form_errors(form.category) }}</td>
 		    </tr>
 		    <tr>
