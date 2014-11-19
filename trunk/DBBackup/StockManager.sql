@@ -30,7 +30,7 @@ CREATE TABLE `category` (
   `description` varchar(500) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,6 +39,7 @@ CREATE TABLE `category` (
 
 LOCK TABLES `category` WRITE;
 /*!40000 ALTER TABLE `category` DISABLE KEYS */;
+INSERT INTO `category` VALUES (1,'Detergenti',NULL),(2,'Alimente',NULL);
 /*!40000 ALTER TABLE `category` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -54,7 +55,7 @@ CREATE TABLE `ingredient` (
   `ingredientName` varchar(15) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -63,6 +64,7 @@ CREATE TABLE `ingredient` (
 
 LOCK TABLES `ingredient` WRITE;
 /*!40000 ALTER TABLE `ingredient` DISABLE KEYS */;
+INSERT INTO `ingredient` VALUES (1,'Agenti tensioni'),(4,'Agenti anionici'),(5,'Faina'),(6,'Apa'),(7,'Drojdie'),(8,'Sare'),(9,'Zahar'),(10,'Ulei');
 /*!40000 ALTER TABLE `ingredient` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -82,7 +84,7 @@ CREATE TABLE `producer` (
   `phone` varchar(15) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -91,6 +93,7 @@ CREATE TABLE `producer` (
 
 LOCK TABLES `producer` WRITE;
 /*!40000 ALTER TABLE `producer` DISABLE KEYS */;
+INSERT INTO `producer` VALUES (1,'Ariel','Strada Panselelor Nr5 Sector 5 Bucuresti','ariel@yahoo.com','http://www.ariel.com','0284567891');
 /*!40000 ALTER TABLE `producer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -115,8 +118,8 @@ CREATE TABLE `product` (
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `fk_product_caegory_idx` (`idCategory`),
   KEY `fk_product_producer_idx` (`idProducer`),
-  CONSTRAINT `fk_product_producer` FOREIGN KEY (`idProducer`) REFERENCES `producer` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_product_category` FOREIGN KEY (`idCategory`) REFERENCES `category` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_product_category` FOREIGN KEY (`idCategory`) REFERENCES `category` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_product_producer` FOREIGN KEY (`idProducer`) REFERENCES `producer` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -139,10 +142,10 @@ DROP TABLE IF EXISTS `product_composition`;
 CREATE TABLE `product_composition` (
   `idProduct` int(11) NOT NULL,
   `idIngredient` int(11) NOT NULL,
-  PRIMARY KEY (`idProduct`,`idIngredient`),
   KEY `fk_product_ingredient_idx` (`idIngredient`),
-  CONSTRAINT `fk_product_ingredient` FOREIGN KEY (`idIngredient`) REFERENCES `ingredient` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_composition_product` FOREIGN KEY (`idProduct`) REFERENCES `product` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `fk_composition_product` (`idProduct`),
+  CONSTRAINT `fk_composition_product` FOREIGN KEY (`idProduct`) REFERENCES `product` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_product_ingredient` FOREIGN KEY (`idIngredient`) REFERENCES `ingredient` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -167,7 +170,7 @@ CREATE TABLE `role` (
   `roleName` varchar(20) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -176,6 +179,7 @@ CREATE TABLE `role` (
 
 LOCK TABLES `role` WRITE;
 /*!40000 ALTER TABLE `role` DISABLE KEYS */;
+INSERT INTO `role` VALUES (1,'ROLE_ADMIN');
 /*!40000 ALTER TABLE `role` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -188,17 +192,16 @@ DROP TABLE IF EXISTS `user`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `user` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `firstName` varchar(15) ,
-  `lastName` varchar(15) ,
-  `email` varchar(20) UNIQUE NOT NULL,
-  `username` varchar(20) UNIQUE NOT NULL,
+  `firstName` varchar(15) DEFAULT NULL,
+  `lastName` varchar(15) DEFAULT NULL,
+  `email` varchar(20) NOT NULL,
+  `username` varchar(20) NOT NULL,
   `password` varchar(20) NOT NULL,
-  `idRol` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`),
-  KEY `fk_user_role_idx` (`idRol`),
-  CONSTRAINT `fk_user_role` FOREIGN KEY (`idRol`) REFERENCES `role` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  UNIQUE KEY `email` (`email`),
+  UNIQUE KEY `username` (`username`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -207,7 +210,34 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES (1,NULL,NULL,'','user1','user1');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `user_role_maps`
+--
+
+DROP TABLE IF EXISTS `user_role_maps`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `user_role_maps` (
+  `idUser` int(11) NOT NULL,
+  `idRole` int(11) NOT NULL,
+  PRIMARY KEY (`idUser`,`idRole`),
+  KEY `fk_user_role_idx` (`idRole`),
+  CONSTRAINT `fk_map_user_role` FOREIGN KEY (`idRole`) REFERENCES `role` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user_role_maps`
+--
+
+LOCK TABLES `user_role_maps` WRITE;
+/*!40000 ALTER TABLE `user_role_maps` DISABLE KEYS */;
+INSERT INTO `user_role_maps` VALUES (1,1);
+/*!40000 ALTER TABLE `user_role_maps` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -219,4 +249,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-11-10 20:39:54
+-- Dump completed on 2014-11-18 20:08:43
