@@ -69,16 +69,27 @@ class ProductDTO{
 	 */
 	private $category;
 	
-	public function convertToProduct(){
+	/**
+	 * @Assert\NotNull()
+	 */
+	private $producer;
+	
+	public function convertToProduct($categoryService,$producerService){
+		$category = $categoryService->getCategoryById($this->category);
+		$producer = $producerService->getproducerById($this->producer);
+		
 		$product = new product();
 		
 		$product->setProductname($this->productName);
 		$product->setManufacturedate($this->manufactureDate);
-		$product->setExpiringdate($this->expiringdate);
+		$product->setExpiringdate($this->expiringDate);
 		$product->setprice($this->productPrice);
 		$product->setAdition($this->productAddition);
 		$product->setObservation($this->description);
-		$product->setIdcategory($this->category);
+		$product->setIdcategory($category);
+		$product->setIdproducer($producer);
+		
+		return $product;
 	}
 	
 	public function __get($name){

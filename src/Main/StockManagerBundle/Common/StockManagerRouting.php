@@ -9,13 +9,17 @@ class StockManagerRouting{
 	const INSERT_PRODUCT_URL = "/admin/insert/product";
 	const INSERT_PRODUCER_URL = "/admin/insert/producer";
 	const INSERT_INGREDIENT_URL = "/admin/insert/ingredient";
+	const INSERT_PRODUCT_INGREDIENT_URL = "/admin/insert/product_ingredient/{product}";
 	const VIEW_CATEGORY_URL = "/admin/view/category/{offset}";
 	const VIEW_PRODUCT_URL = "/admin/view/product/{category}/{offset}";
 	const VIEW_PRODUCER_URL = "/admin/view/producer/{offset}";
 	const VIEW_PRODUCER_DETAILS_URL = "/admin/view/producer/detail/{producer}";
 	const VIEW_INGREDIENTS_URL = "/admin/view/ingredients/{offset}";
+	const VIEW_PRODUCT_INGREDIENT_URL = "/admin/view/product_ingredient/{product}/{offset}";
 	const DROP_PRODUCER_URL = "/admin/drop/producer/{producer}";
 	const DROP_INGREDIENT_URL = "/admin/drop/ingredient/{ingredient}";
+	const DROP_CATEGORY_URL = "/admin/drop/category/{category}";
+	const DROP_PRODUCT_INGREDIENT_URL = "/admin/drop/product_ingredient/{product}/{ingredient}";
 	const UPDATE_PRODUCER_URL = "/admin/update/producer/{producer}";
 
 	const HOME_KEY = "main_stock_manager_homepage";
@@ -25,13 +29,17 @@ class StockManagerRouting{
 	const INSERT_PRODUCT_KEY = "main_stock_manager_insert_product";
 	const INSERT_PRODUCER_KEY = "main_stock_manager_insert_producer";
 	const INSERT_INGREDIENT_KEY = "main_stock_manager_insert_ingredient";
+	const INSERT_PRODUCT_INGREDIENT_KEY = "main_stock_manager_insert_product_ingredient";
 	const VIEW_CATEGORY_KEY = "main_stock_manager_view_category";
 	const VIEW_PRODUCT_KEY = "main_stock_manager_view_product";
 	const VIEW_PRODUCER_KEY = "main_stock_manager_view_producer";
 	const VIEW_PRODUCER_DETAILS_KEY = "main_stock_manager_view_producer_detail";
 	const VIEW_INGREDIENTS_KEY = "main_stock_manager_view_ingredients";
+	const VIEW_PRODUCT_INGREDIENT_KEY = "main_stock_manager_view_product_ingredient";
 	const DROP_PRODUCER_KEY = "main_stock_manager_drop_producer";
 	const DROP_INGREDIENT_KEY = "main_stock_manager_drop_ingredient";
+	const DROP_CATEGORY_KEY = "main_stock_manager_drop_category";
+	const DROP_PRODUCT_INGREDIENT_KEY = "main_stock_manager_drop_product_ingredient";
 	const UPDATE_PRODUCER_KEY = "main_stock_manager_update_producer";
 	
 	const LOGIN_URL = "/login";

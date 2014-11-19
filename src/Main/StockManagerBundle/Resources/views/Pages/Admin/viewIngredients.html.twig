@@ -16,7 +16,7 @@
   				<td>{{ item.ingredientname }} </td>
   				<td>
   					<form action="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::DROP_INGREDIENT_KEY'), {  'ingredient':item.id  }) }}">
-  						<input type="submit" class="btn btn-default" style='background-color:#87BAE5' value="Drop producer"/>
+  						<input type="submit" class="btn btn-default" style='background-color:#87BAE5' value="Drop ingredient"/>
   					</form>
   				</td>
   			</tr>
@@ -38,7 +38,9 @@
                 {% endif %}
             {% endif %}
         {% endfor %}
-        <li> <a class="next" href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::VIEW_INGREDIENTS_KEY'), {  'offset': paginator.currentpage+1 }) }}">Next</a>
+        {% if paginator.currentpage + 1 <= paginator.numpages %}
+        	<li> <a class="next" href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::VIEW_INGREDIENTS_KEY'), {  'offset': paginator.currentpage+1 }) }}">Next</a>
+        {% endif %}
     </ul>
 </div>
   	

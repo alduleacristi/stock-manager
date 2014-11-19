@@ -5,6 +5,7 @@ namespace Main\StockManagerBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Main\StockManagerBundle\Common\StockManagerRouting;
 use Main\StockManagerBundle\Forms\InsertCategoryForm;
+use Main\StockManagerBundle\Forms\InsertProductIngredientForm;
 use Main\StockManagerBundle\StockManagerDTO\UserDTO;
 use Main\StockManagerBundle\StockManagerDTO\CategoryDTO;
 use Main\StockManagerBundle\Forms\InsertProductForm;
@@ -13,6 +14,7 @@ use Main\StockManagerBundle\Forms\InsertProducerForm;
 use Main\StockManagerBundle\StockManagerDTO\ProducerDTO;
 use Main\StockManagerBundle\Forms\InsertIngredientForm;
 use Main\StockManagerBundle\StockManagerDTO\IngredientDTO;
+use Main\StockManagerBundle\StockManagerDTO\ProductIngredientDTO;
 use Symfony\Component\HttpFoundation\Request;
 use Main\StockManagerBundle\Common\StockManagerPaginator;
 
@@ -62,18 +64,18 @@ class RoutingController extends Controller
     {
     	$productDTO = new ProductDTO();
     	 
-    	$form = $this->createForm(new InsertProductForm(), $productDTO);
+    	$form = $this->createForm(new InsertProductForm($this->get('category_service'),$this->get('producer_service')), $productDTO);
     	 
     	$form->handleRequest($request);
     	 
     	if ($form->isValid()) {
     		$productService = $this->get('product_service');
     		
-    		$category = $categoryDTO->convertToCategory();
-    		$categoryService->insertCategory($category);
+    		$product = $productDTO->convertToProduct($this->get('category_service'),$this->get('producer_service'));
+    		$productService->insertProduct($product);
     		
     			
-    		return $this->redirect($this->generateurl(StockManagerRouting::VIEW_CATEGORY_KEY));
+    		return $this->redirect($this->generateurl(StockManagerRouting::VIEW_PRODUCT_KEY,array('category' => $productDTO->category)));
     	}
     	 
     	return $this->render('MainStockManagerBundle:Pages/Admin:insertProduct.html.twig', array('form' => $form->createView()));
@@ -103,7 +105,7 @@ class RoutingController extends Controller
     {
     	$ingredientDTO = new IngredientDTO();
     
-    	$form = $this->createForm(new InsertIngredientForm(), $ingredientDTO);
+    	$form = $this->createForm(new InsertIngredientForm($this->get('ingredient_service')), $ingredientDTO);
     	$form->handleRequest($request);
     
     	if ($form->isValid()) {
@@ -115,6 +117,27 @@ class RoutingController extends Controller
     	}
     
     	return $this->render('MainStockManagerBundle:Pages/Admin:insertIngredient.html.twig', array('form' => $form->createView()));
+    }
+    
+    public function insertProductIngredientFormAction(Request $request,$product)
+    {
+    	$productIngredientDTO = new ProductIngredientDTO();
+    	$productIngredientDTO->product = $product;
+    
+    	$form = $this->createForm(new InsertProductIngredientForm($this->get('ingredient_service')), $productIngredientDTO);
+    	$form->handleRequest($request);
+    
+    	if ($form->isValid()) {
+     		$productService = $this->get('product_service');
+    		 
+     		$ingredient = $productIngredientDTO->convertToIngredient($this->get('ingredient_service'));
+     		$productService->addIngredient($product,$ingredient);
+    		 
+    
+     		return $this->redirect($this->generateurl(StockManagerRouting::VIEW_PRODUCT_INGREDIENT_KEY,array('product' => $product,'offset' => 1)));
+    	}
+    
+    	return $this->render('MainStockManagerBundle:Pages/Admin:insertProductIngredient.html.twig', array('form' => $form->createView(), 'message' => "Insert producer"));
     }
     
     public function viewCategoryAction($offset)
@@ -206,6 +229,27 @@ class RoutingController extends Controller
     		return $this->render('MainStockManagerBundle:Pages/Admin:viewIngredients.html.twig', array('ingredients' => $resultIngredients, 'paginator' => $paginator));
     }
     
+    public function viewProductIngredientAction($product,$offset)
+    {
+    	$productService = $this->get('product_service');
+    	$product = $productService->getProductById($product);
+    	$ingredients = $product->getIdingredient();
+    
+    	$limit = 7;
+    	$midrange = 3;
+    
+    	$itemsCount = sizeof($ingredients);
+    	$resultIngredients = array();
+    	$n = $offset * $limit;
+    	for($i=$offset*$limit-$limit;$i<$n && $i<$itemsCount;$i++)
+    		$resultIngredients[$i] = $ingredients[$i];
+    		 
+    		$paginator = new StockManagerPaginator($itemsCount, $offset , $limit, $midrange);
+    
+    
+    		return $this->render('MainStockManagerBundle:Pages/Admin:viewProductIngredient.html.twig', array('ingredients' => $resultIngredients, 'paginator' => $paginator, 'product' => $product));
+    }
+    
     public function dropProducerAction($producer)
     {
     	$producerService = $this->get('producer_service');
@@ -252,6 +296,68 @@ class RoutingController extends Controller
     		$paginator = new StockManagerPaginator($itemsCount, $offset , $limit, $midrange);
     		 
     		return $this->render('MainStockManagerBundle:Pages/Admin:viewIngredients.html.twig', array('ingredients' => $resultIngredients, 'paginator' => $paginator));
+    }
+    
+    public function dropCategoryAction($category)
+    {
+    	$categoryService = $this->get('category_service');
+    
+    	$categoryObject = $categoryService->getCategoryById($category);
+    	
+    	$error = "";
+    	if(sizeof($categoryObject->getProducts()) > 0){
+    		$error = "Category can not be deleted because contains products";
+    		
+    		$categorys = $categoryService->getAllCategory();
+    		
+    		$limit = 7;
+    		$midrange = 3;
+    		
+    		$itemsCount = sizeof($categorys);
+    		$resultCategorys = array();
+    		$offset = 1;
+    		$n = $offset * $limit;
+    		for($i=$offset*$limit-$limit;$i<$n && $i<$itemsCount;$i++)
+    			$resultCategorys[$i] = $categorys[$i];
+    			 
+    		$paginator = new StockManagerPaginator($itemsCount, $offset , $limit, $midrange);
+    		
+    		return $this->render('MainStockManagerBundle:Pages/Admin:viewCategory.html.twig', array('categorys' => $resultCategorys, 'paginator' => $paginator, 'error' => $error));
+    	}
+    	
+    	$categoryService->dropCategory($categoryObject);
+    
+    	$categorys = $categoryService->getAllCategory();
+    
+    	$limit = 7;
+    	$midrange = 3;
+    
+    	$itemsCount = sizeof($categorys);
+    	$resultCategorys = array();
+    	$offset = 1;
+    	$n = $offset * $limit;
+    	for($i=$offset*$limit-$limit;$i<$n && $i<$itemsCount;$i++)
+    		$resultCategorys[$i] = $categorys[$i];
+    		 
+    		$paginator = new StockManagerPaginator($itemsCount, $offset , $limit, $midrange);
+    		 
+    		return $this->render('MainStockManagerBundle:Pages/Admin:viewCategory.html.twig', array('categorys' => $resultCategorys, 'paginator' => $paginator, 'error' => $error));
+    }
+    
+    public function dropProductIngredientAction($product,$ingredient)
+    {
+    	$productService = $this->get('product_service');
+    	$ingredientService = $this->get('ingredient_service');
+    
+    	$ingredientObject = $ingredientService->getIngredientById($ingredient);
+    	
+    	$productService->removeIngredient($product,$ingredientObject);
+    
+    	$productService = $this->get('product_service');
+    	$product = $productService->getProductById($product);
+    	$ingredients = $product->getIdingredient();
+    
+    	return $this->render('MainStockManagerBundle:Pages/Admin:viewProductIngredient.html.twig', array('ingredients' => $ingredients, 'product' => $product));
     }
     
     public function updateProducerAction($producer,Request $request)

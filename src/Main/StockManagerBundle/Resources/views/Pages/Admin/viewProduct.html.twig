@@ -14,6 +14,11 @@
   			<tr>
   				<td>{{ item.id }} </td>
   				<td>{{ item.productname }} </td>
+  				<td>
+  				<form action="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::INSERT_PRODUCT_INGREDIENT_KEY'), {  'product':item.id }) }}">
+  					<input type="submit" class="btn btn-default" style='background-color:#87BAE5' value="Insert ingredient"/>
+  				</form>
+  			</td>
   			</tr>
   			{% endfor %}
   		</table>
@@ -33,7 +38,9 @@
                 {% endif %}
             {% endif %}
         {% endfor %}
-        <li> <a class="next" href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::VIEW_PRODUCT_KEY'), {  'category':category, 'offset': paginator.currentpage+1 }) }}">Next</a>
+        {% if paginator.currentpage + 1 <= paginator.numpages %}
+        	<li> <a class="next" href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::VIEW_PRODUCT_KEY'), {  'category':category, 'offset': paginator.currentpage+1 }) }}">Next</a>
+        {% endif %}
     </ul>
 </div>
   	

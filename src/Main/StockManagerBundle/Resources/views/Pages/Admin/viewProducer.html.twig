@@ -50,7 +50,9 @@
                 {% endif %}
             {% endif %}
         {% endfor %}
-        <li> <a class="next" href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::VIEW_PRODUCER_KEY'), {  'offset': paginator.currentpage+1 }) }}">Next</a>
+        {% if paginator.currentpage + 1 <= paginator.numpages %}
+        	<li> <a class="next" href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::VIEW_PRODUCER_KEY'), {  'offset': paginator.currentpage+1 }) }}">Next</a>
+        {% endif %}
     </ul>
 </div>
   	

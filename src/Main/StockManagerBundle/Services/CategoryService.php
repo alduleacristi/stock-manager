@@ -21,5 +21,10 @@ class CategoryService{
 	public function getCategoryById($idcategory){
 		return $this->em->getRepository('MainStockManagerBundle:Category')->find($idcategory);
 	}
+	
+	public function dropCategory($category) {
+		$this->em->remove ( $category );
+		$this->em->flush ();
+	}
 }
 ?>

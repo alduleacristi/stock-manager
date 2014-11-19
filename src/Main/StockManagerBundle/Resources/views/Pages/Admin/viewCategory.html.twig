@@ -2,9 +2,11 @@
 {% block page_title %}
 {% endblock %}
 {% block content %}
+	{% if error is defined and error != ""%}
+    	<div class="alert alert-danger" role="alert">{{ error }}</div>
+	{% endif %}
 	<div class="panel panel-default">
   		<div class="panel-heading">Categorys</div>
-  		
   		<table class="table">
     		<tr>
   				<th>#</th>
@@ -17,6 +19,11 @@
   				<td>
   					<form action="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::VIEW_PRODUCT_KEY'), {  'category':item.id, 'offset': paginator.currentpage }) }}">
   						<input type="submit" class="btn btn-default" style='background-color:#87BAE5' value="View products"/>
+  					</form>
+  				</td>
+  				<td>
+  					<form action="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::DROP_CATEGORY_KEY'), {  'category':item.id, 'offset': paginator.currentpage }) }}">
+  						<input type="submit" class="btn btn-default" style='background-color:#87BAE5' value="Drop category"/>
   					</form>
   				</td>
   			</tr>
@@ -38,7 +45,9 @@
                 {% endif %}
             {% endif %}
         {% endfor %}
-        <li> <a class="next" href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::VIEW_CATEGORY_KEY'), {  'offset': paginator.currentpage+1 }) }}">Next</a>
+        {% if paginator.currentpage + 1 <= paginator.numpages %}
+        	<li> <a class="next" href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::VIEW_CATEGORY_KEY'), {  'offset': paginator.currentpage+1 }) }}">Next</a>
+        {% endif %}
     </ul>
 </div>
   	

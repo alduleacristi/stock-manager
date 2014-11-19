@@ -1,0 +1,28 @@
+{% extends '::admin.html.twig' %}
+{% block page_title %}
+{% endblock %}
+{% block content %}
+  <div class="panel panel-default">
+  		<div class="panel-heading">Ingredients of {{ product.getProductname() }}</div>
+  		<table class="table">
+    		<tr>
+  				<th>Ingredient name</th>
+  			</tr>
+  	{% for item in ingredients %}
+    	<tr>
+    		<td>{{ item.getIngredientname() }}</td>
+    	<td>
+    		<form action="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::DROP_PRODUCT_INGREDIENT_KEY'), {  'ingredient':item.id, 'product':product.id, 'offset': paginator.currentpage }) }}">
+  						<input type="submit" class="btn btn-default" style='background-color:#87BAE5' value="Drop ingredient"/>
+  			</form>
+  		</td>
+    	</tr>
+  	{% endfor %}
+  	</table>
+</div>
+<div align="center">
+	<form action="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::VIEW_PRODUCT_KEY'), {  'category':product.getIdcategory().id }) }}">
+  						<input type="submit" class="btn btn-default" style='background-color:#87BAE5' value="Go back"/>
+  			</form>
+</div>
+{% endblock %}

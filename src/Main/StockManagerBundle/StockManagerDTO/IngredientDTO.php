@@ -10,9 +10,9 @@ class IngredientDTO{
 	 * @Assert\NotBlank
 	 * @Assert\Length(
 	 * 	  min = 3,
-	 * 	  max = 15,
+	 * 	  max = 25,
 	 *    minMessage = "The category name must have at least 3 characters",
-	 *    maxMessage = "The category name can have maximum 15 characters"
+	 *    maxMessage = "The category name can have maximum 25 characters"
 	 * ) 	
 	 */
 	private $ingredientName;
