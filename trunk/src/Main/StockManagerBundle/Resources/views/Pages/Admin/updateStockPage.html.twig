@@ -1,0 +1,11 @@
+{% extends '::admin.html.twig' %}
+{% block page_title %}
+{% endblock %}
+{% block content %}
+<form action="{{ path(constant("Main\\StockManagerBundle\\Common\\StockManagerRouting::UPDATE_STOCK_PROCESS_KEY")) }}" method="post" >
+  	<h2 class="form-signin-heading">Search for a product</h2>
+    <input type="text" id="productName" name="productName"  class="form-control" placeholder="Product name" required autofocus/>
+    
+    <button type="submit" class="btn btn-lg btn-primary btn-block">Search</button>
+</form>
+{% endblock %}

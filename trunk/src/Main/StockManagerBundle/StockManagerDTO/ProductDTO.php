@@ -88,6 +88,7 @@ class ProductDTO{
 		$product->setObservation($this->description);
 		$product->setIdcategory($category);
 		$product->setIdproducer($producer);
+		$product->setPieces(0);
 		
 		return $product;
 	}

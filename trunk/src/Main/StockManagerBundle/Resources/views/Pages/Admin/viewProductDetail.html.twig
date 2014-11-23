@@ -1,0 +1,85 @@
+{% extends '::admin.html.twig' %}
+{% block page_title %}
+{% endblock %}
+{% block content %}
+	<div class="panel panel-default">
+  		<div class="panel-heading">Product detail</div>
+  			<ul class="list-group">
+  				<li class="list-group-item">
+  					<div class="panel panel-default">
+  						<div class="panel-heading">Product name</div>
+  						<div align="center">{{ product.productname }}</div>
+  					</div>
+  				</li>
+  				<li class="list-group-item">
+  					<div class="panel panel-default">
+  						<div class="panel-heading">Manufacture date</div>
+  						<div align="center">{{ product.manufacturedate|date("m/d/Y") }}</div>
+  					</div>
+  				</li>
+  				<li class="list-group-item">
+  					<div class="panel panel-default">
+  						<div class="panel-heading">Expiring date</div>
+  						<div align="center">{{ product.expiringdate|date("m/d/Y") }}</div>
+  					</div>
+  				</li>
+  				<li class="list-group-item">
+  					<div class="panel panel-default">
+  						<div class="panel-heading">Price</div>
+  						<div align="center">{{ product.price }} RON</div>
+  					</div>
+  				</li>
+  				<li class="list-group-item">
+  					<div class="panel panel-default">
+  						<div class="panel-heading">Adition</div>
+  						<div align="center">{{ product.adition }}%</div>
+  					</div>
+  				</li>
+  				<li class="list-group-item">
+  					<div class="panel panel-default">
+  						<div class="panel-heading">Product ingredients</div>
+  						<table class="table">
+    					<tr>
+  							<th>Ingredient name</th>
+  						</tr>
+  						{% for ingredient in product.idingredient %}
+  						<tr>	
+  							<td>{{ ingredient.ingredientname }}</td>
+  							<td>
+  								<form action="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::DROP_PRODUCT_INGREDIENT_KEY'), {  'product':product.id,'ingredient':ingredient.id }) }}">
+  								<div align="center"><input type="submit" class="btn btn-default" style='background-color:#87BAE5' value="Drop ingredient" /></div>
+  							</form>
+  							</td>
+  						</tr>
+  						{% endfor %}
+  						</table>
+  						<br/>
+  						<br/>
+  							<form action="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::INSERT_PRODUCT_INGREDIENT_KEY'), {  'product':product.id }) }}">
+  								<div align="center"><input type="submit" class="btn btn-default" style='background-color:#87BAE5' value="Insert ingredient" /></div>
+  							</form>
+  						</div>
+  					</div>
+  				</li>
+  				<li class="list-group-item">
+  					<div class="panel panel-default">
+  						<div class="panel-heading">Category</div>
+  						<div align="center">{{ product.idcategory.categoryname }}</div>
+  					</div>
+  				</li>
+  				<li class="list-group-item">
+  					<div class="panel panel-default">
+  						<div class="panel-heading">Producer</div>
+  						<div align="center">{{ product.idproducer.producername }}</div>
+  					</div>
+  				</li>
+  				</div>
+  			</ul>
+  			<div align="center">
+  					<form action="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::VIEW_PRODUCT_KEY'), {'product':product.id, 'category':product.idcategory.id}) }}">
+  						<input type="submit" class="btn btn-default" style='background-color:#87BAE5' value="Go back"/>
+  					</form>
+  			</div>
+  	</div>
+  	
+{% endblock %}

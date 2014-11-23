@@ -43,6 +43,11 @@ class Product
      * @var integer
      */
     private $id;
+    
+    /**
+     * @var integer
+     */
+    private $pieces;
 
     /**
      * @var \Main\StockManagerBundle\Entity\Category
@@ -157,6 +162,29 @@ class Product
     public function getPrice()
     {
         return $this->price;
+    }
+    
+    /**
+     * Set pieces
+     *
+     * @param integer $pieces
+     * @return Product
+     */
+    public function setPieces($pieces)
+    {
+    	$this->pieces = $pieces;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get pieces
+     *
+     * @return integer
+     */
+    public function getPieces()
+    {
+    	return $this->pieces;
     }
 
     /**
@@ -292,5 +320,70 @@ class Product
     public function getIdingredient()
     {
         return $this->idingredient;
+    }
+    
+    static public function getLuceneIndex()
+    {
+    	if (file_exists($index = self::getLuceneIndexFile())) {
+    		return \Zend_Search_Lucene::open($index);
+    	}
+    
+    	return \Zend_Search_Lucene::create($index);
+    }
+    
+    static public function getLuceneIndexFile()
+    {
+    	return __DIR__.'/../../../../web/data/product.index';
+    }
+
+    /**
+     * @ORM\PostPersist
+     */
+    public function updateLuceneIndex()
+    {	
+    	\Zend_Search_Lucene_Analysis_Analyzer::setDefault(
+    			new \Zend_Search_Lucene_Analysis_Analyzer_Common_Text_CaseInsensitive());
+    	
+        $index = self::getLuceneIndex();
+ 
+        // remove existing entries
+        foreach ($index->find('pk:'.$this->getId()) as $hit)
+        {
+          $index->delete($hit->id);
+        }
+ 
+        $doc = new \Zend_Search_Lucene_Document();
+ 
+        // store job primary key to identify it in the search results
+        $doc->addField(\Zend_Search_Lucene_Field::Keyword('pk', $this->getId()));
+ 
+        // index job fields
+        $doc->addField(\Zend_Search_Lucene_Field::Text('productName', $this->getProductname(), 'utf-8'));
+//         $doc->addField(\Zend_Search_Lucene_Field::UnStored('company', $this->getCompany(), 'utf-8'));
+//         $doc->addField(\Zend_Search_Lucene_Field::UnStored('location', $this->getLocation(), 'utf-8'));
+//         $doc->addField(\Zend_Search_Lucene_Field::UnStored('description', $this->getDescription(), 'utf-8'));
+ 
+        // add job to the index
+        $index->addDocument($doc);
+        $index->commit();
+    }
+
+    /**
+     * @ORM\PreRemove
+     */
+    public function deleteLuceneIndex()
+    {
+    	echo $this->getId();
+     $index = self::getLuceneIndex();
+ 
+     $query = 'pk:'.$this->getId();
+     echo $query;
+     foreach ($index->find($query) as $hit) {
+     	  echo "in foreach";
+     	  echo $hit->id;
+          $index->delete($hit->id);
+     }
+       
+     $index->commit();
     }
 }
