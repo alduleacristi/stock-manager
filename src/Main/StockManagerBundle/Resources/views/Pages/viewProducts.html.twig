@@ -1,0 +1,51 @@
+{% extends '::visitors.html.twig' %}
+{% block page_title %}
+{% endblock %}
+{% block content %}
+	<div class="panel panel-default">
+  		<div class="panel-heading">Products</div>
+  		
+  		<table class="table">
+    		<tr>
+  				<th>#</th>
+  				<th>Product name</th>
+  			</tr>
+  			{% for item in products %}
+  			<tr>
+  				<td>{{ item.id }} </td>
+  				<td>{{ item.productname }} </td>
+  				<td>
+  				<form action="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::VIEW_PRODUCT_DETAIL_KEY'), {  'product':item.id }) }}">
+  					<input type="submit" class="btn btn-default" style='background-color:#87BAE5' value="View details"/>
+  				</form>
+  				</td>
+{#   				<td>#}
+{#   					<form action="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::DROP_PRODUCT_KEY'), {  'category':category, 'product':item.id, 'offset':paginator.currentpage }) }}">#}
+{#   						<input type="submit" class="btn btn-default" style='background-color:#87BAE5' value="Drop product"/>#}
+{#   					</form>#}
+{#   				</td>#}
+  			{% endfor %}
+  		</table>
+  	</div>
+	
+	<div align="center">
+    <ul class="pagination">
+        {% if paginator.currentpage != 1 %}
+            <li> <a class="previous" href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::VIEW_PRODUCTS_KEY'), {'offset': paginator.currentpage-1 }) }}">Previous</a>
+        {% endif %}
+        {% for i in 1..paginator.numpages%}
+            {%  if(i==1 or i==paginator.numpages or i in paginator.range) %}
+                {% if i==paginator.currentpage %}
+                    <li><a class="active" href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::VIEW_PRODUCTS_KEY'), {  'offset': i })}}">{{i}}</a></li>
+                {% else %}
+                <li><a href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::VIEW_PRODUCTS_KEY'), {  'offset': i }) }}"> {{i}}</a></li>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+        {% if paginator.currentpage + 1 <= paginator.numpages %}
+        	<li> <a class="next" href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::VIEW_PRODUCTS_KEY'), {  'offset': paginator.currentpage+1 }) }}">Next</a>
+        {% endif %}
+    </ul>
+</div>
+  	
+{% endblock %}

@@ -18,6 +18,10 @@ class ProductService{
 		return $this->em->getRepository('MainStockManagerBundle:Product')->find($idProduct);
 	}
 	
+	public function getAllProducts(){
+		return $this->em->getRepository('MainStockManagerBundle:Product')->findAll();
+	}
+	
 	public function addIngredient($product,$ingredient){
 		$oldProduct = $this->getProductById($product);
 	
@@ -30,6 +34,19 @@ class ProductService{
 		$oldProduct = $this->getProductById($product);
 		
 		$oldProduct->removeIdingredient($ingredientObject);
+		
+		$this->em->flush();
+	}
+	
+	public function dropProduct($product) {
+		$this->em->remove ( $product );
+		$this->em->flush ();
+	}
+	
+	public function updateStock($product){
+		$oldProduct = $this->getProductById($product->getId());
+		
+		$oldProduct->setPieces = $product->getPieces();
 		
 		$this->em->flush();
 	}

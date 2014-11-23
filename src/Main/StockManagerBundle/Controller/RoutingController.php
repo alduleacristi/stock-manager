@@ -13,10 +13,13 @@ use Main\StockManagerBundle\StockManagerDTO\ProductDTO;
 use Main\StockManagerBundle\Forms\InsertProducerForm;
 use Main\StockManagerBundle\StockManagerDTO\ProducerDTO;
 use Main\StockManagerBundle\Forms\InsertIngredientForm;
+use Main\StockManagerBundle\Forms\UpdateStockForm;
 use Main\StockManagerBundle\StockManagerDTO\IngredientDTO;
+use Main\StockManagerBundle\StockManagerDTO\StockDTO;
 use Main\StockManagerBundle\StockManagerDTO\ProductIngredientDTO;
 use Symfony\Component\HttpFoundation\Request;
 use Main\StockManagerBundle\Common\StockManagerPaginator;
+use Main\StockManagerBundle\Entity\Product;
 
 use Symfony\Component\Security\Core\Exception\TokenNotFoundException;
 
@@ -134,7 +137,7 @@ class RoutingController extends Controller
      		$productService->addIngredient($product,$ingredient);
     		 
     
-     		return $this->redirect($this->generateurl(StockManagerRouting::VIEW_PRODUCT_INGREDIENT_KEY,array('product' => $product,'offset' => 1)));
+     		return $this->redirect($this->generateurl(StockManagerRouting::VIEW_PRODUCT_DETAIL_KEY,array('product' => $product)));
     	}
     
     	return $this->render('MainStockManagerBundle:Pages/Admin:insertProductIngredient.html.twig', array('form' => $form->createView(), 'message' => "Insert producer"));
@@ -250,6 +253,67 @@ class RoutingController extends Controller
     		return $this->render('MainStockManagerBundle:Pages/Admin:viewProductIngredient.html.twig', array('ingredients' => $resultIngredients, 'paginator' => $paginator, 'product' => $product));
     }
     
+    public function viewSearchVisitorProductAction($offset)
+    {
+    	$productName = $_POST['productName'];
+    	
+    	$hits = Product::getLuceneIndex()->find($productName);
+    	
+    	$pks = array();
+    	foreach ($hits as $hit)
+    	{
+    		$pks[] = $hit->pk;
+    	}
+    	
+    	$productService = $this->get('product_service');
+    	$products = array();
+    	
+    	for($i=0;$i<sizeof($pks);$i++){
+    		$productObject = $productService->getProductById($pks[$i]);
+    		$products[$i] = $productObject;
+    	}
+    	 
+    	$limit = 7;
+    	$midrange = 3;
+    
+    	$itemsCount = sizeof($products);
+    	$resultProducts = array();
+    	$n = $offset * $limit;
+    	for($i=$offset*$limit-$limit;$i<$n && $i<$itemsCount;$i++)
+    		$resultProducts[$i] = $products[$i];
+    		 
+    	$paginator = new StockManagerPaginator($itemsCount, $offset , $limit, $midrange);
+    
+    	return $this->render('MainStockManagerBundle:Pages:viewSearchProduct.html.twig', array('products' => $resultProducts, 'paginator' => $paginator));
+    }
+    
+    public function viewProductsAction($offset)
+    {
+    	$productService = $this->get('product_service');
+    	$products = $productService->getAllProducts();
+    
+    	$limit = 7;
+    	$midrange = 3;
+    
+    	$itemsCount = sizeof($products);
+    	$resultProducts = array();
+    	$n = $offset * $limit;
+    	for($i=$offset*$limit-$limit;$i<$n && $i<$itemsCount;$i++)
+    		$resultProducts[$i] = $products[$i];
+    		 
+    	$paginator = new StockManagerPaginator($itemsCount, $offset , $limit, $midrange);
+    
+    	return $this->render('MainStockManagerBundle:Pages:viewProducts.html.twig', array('paginator' => $paginator,'products' => $resultProducts));
+    }
+    
+    public function viewProductDetailAction($product)
+    {
+    	$productService = $this->get('product_service');
+    	$product = $productService->getProductById($product);
+    
+    	return $this->render('MainStockManagerBundle:Pages/Admin:viewProductDetail.html.twig', array('product' => $product));
+    }
+    
     public function dropProducerAction($producer)
     {
     	$producerService = $this->get('producer_service');
@@ -357,7 +421,32 @@ class RoutingController extends Controller
     	$product = $productService->getProductById($product);
     	$ingredients = $product->getIdingredient();
     
-    	return $this->render('MainStockManagerBundle:Pages/Admin:viewProductIngredient.html.twig', array('ingredients' => $ingredients, 'product' => $product));
+    	return $this->render('MainStockManagerBundle:Pages/Admin:viewProductDetail.html.twig', array('product' => $product));
+    }
+    
+    public function dropProductAction($category,$product,$offset)
+    {
+    	$productService = $this->get('product_service');
+    	$categoryService = $this->get('category_service');
+    
+    	$productObject = $productService->getProductById($product);
+    	$productService->dropProduct($productObject);
+    
+    	$products = $categoryService->getCategoryById($category)->getProducts();
+    
+    	$limit = 7;
+    	$midrange = 3;
+    
+    	$itemsCount = sizeof($products);
+    	$resultProducts = array();
+    	$offset = 1;
+    	$n = $offset * $limit;
+    	for($i=$offset*$limit-$limit;$i<$n && $i<$itemsCount;$i++)
+    		$resultProducts[$i] = $products[$i];
+    		 
+    	$paginator = new StockManagerPaginator($itemsCount, $offset , $limit, $midrange);
+    		 
+    	return $this->render('MainStockManagerBundle:Pages/Admin:viewProduct.html.twig', array('products' => $resultProducts, 'paginator' => $paginator, 'category' => $category));
     }
     
     public function updateProducerAction($producer,Request $request)
@@ -371,7 +460,7 @@ class RoutingController extends Controller
     	$producerDTO->url = $producer->getUrl();
     	$producerDTO->email = $producer->getEmail();
     	$producerDTO->phone = $producer->getPhone();
-    	$producerDTO->id = $producer->getId();
+    	$producerDTO->id = $producer->getId();;
     
     	$form = $this->createForm(new InsertProducerForm(), $producerDTO);
     	$form->handleRequest($request);
@@ -384,5 +473,64 @@ class RoutingController extends Controller
     	}
     
     	return $this->render('MainStockManagerBundle:Pages/Admin:insertProducer.html.twig', array('form' => $form->createView(), 'message' => "Update producer"));
+    }
+    
+    public function updateStockAction($product,Request $request)
+    {    	 
+    	$stockDTO = new StockDTO();
+
+    	$productService = $this->get('product_service');
+    	$productObject = $productService->getProductById($product);
+    
+    	$form = $this->createForm(new UpdateStockForm(), $stockDTO);
+    	$form->handleRequest($request);
+    
+    	if ($form->isValid()) {
+    		$productObject->setPieces($productObject->getPieces()+$stockDTO->pieces);
+    		$productService->updateStock($productObject);
+    
+    		return $this->redirect($this->generateurl(StockManagerRouting::VIEW_PRODUCT_KEY,array('category'=>$productObject->getIdcategory()->getId(),'product'=>$productObject->getId())));
+    	}
+    
+    	return $this->render('MainStockManagerBundle:Pages/Admin:updateStock.html.twig', array('form' => $form->createView()));
+    }
+    
+    public function updateStockPageAction(Request $request)
+    {
+    	return $this->render('MainStockManagerBundle:Pages/Admin:updateStockPage.html.twig');
+    }
+    
+    public function updateStockProcessAction($offset)
+    {
+    	$productName = $_POST['productName'];
+    	
+    	$hits = Product::getLuceneIndex()->find($productName);
+    	
+    	$pks = array();
+    	foreach ($hits as $hit)
+    	{
+    		$pks[] = $hit->pk;
+    	}
+    	
+    	$productService = $this->get('product_service');
+    	$products = array();
+    	
+    	for($i=0;$i<sizeof($pks);$i++){
+    		$productObject = $productService->getProductById($pks[$i]);
+    		$products[$i] = $productObject;
+    	}
+    	 
+    	$limit = 7;
+    	$midrange = 3;
+    
+    	$itemsCount = sizeof($products);
+    	$resultProducts = array();
+    	$n = $offset * $limit;
+    	for($i=$offset*$limit-$limit;$i<$n && $i<$itemsCount;$i++)
+    		$resultProducts[$i] = $products[$i];
+    		 
+    	$paginator = new StockManagerPaginator($itemsCount, $offset , $limit, $midrange);
+    
+    	return $this->render('MainStockManagerBundle:Pages/Admin:viewSearchProduct.html.twig', array('products' => $resultProducts, 'paginator' => $paginator));
     }
 }

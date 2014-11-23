@@ -17,6 +17,7 @@
     <field name="price" type="float" column="price" precision="10" scale="0" nullable="false"/>
     <field name="adition" type="float" column="adition" precision="10" scale="0" nullable="false"/>
     <field name="observation" type="string" column="observation" length="500" nullable="true"/>
+    <field name="pieces" type="integer" column="pieces" nullable="false"/>
     <many-to-one field="idcategory" target-entity="Category" inversed-by="products">
       <join-columns>
         <join-column name="idCategory" referenced-column-name="id"/>
@@ -37,5 +38,11 @@
         </inverse-join-columns>
       </join-table>
     </many-to-many>
+    
+    <lifecycle-callbacks>
+        <lifecycle-callback type="postPersist" method="updateLuceneIndex" />
+        <lifecycle-callback type="postUpdate" method="updateLuceneIndex"/>
+        <lifecycle-callback type="preRemove" method="deleteLuceneIndex"></lifecycle-callback>
+    </lifecycle-callbacks>
   </entity>
 </doctrine-mapping>

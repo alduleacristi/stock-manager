@@ -102,4 +102,27 @@ class Category
     {
     	$this->products->removeElement($product);
     }
+
+    /**
+     * Add products
+     *
+     * @param \Main\StockManagerBundle\Entity\Product $products
+     * @return Category
+     */
+    public function addProduct(\Main\StockManagerBundle\Entity\Product $products)
+    {
+        $this->products[] = $products;
+
+        return $this;
+    }
+
+    /**
+     * Remove products
+     *
+     * @param \Main\StockManagerBundle\Entity\Product $products
+     */
+    public function removeProduct(\Main\StockManagerBundle\Entity\Product $products)
+    {
+        $this->products->removeElement($products);
+    }
 }

@@ -1,0 +1,50 @@
+{% extends '::visitors.html.twig' %}
+{% block page_title %}
+{% endblock %}
+
+{% block content %}
+	<div class="panel panel-default">
+  		<div class="panel-heading">Products</div>
+  		
+  		<table class="table">
+    		<tr>
+  				<th>#</th>
+  				<th>Product name</th>
+  				<th>Products in stock</th>
+  			</tr>
+  			{% for item in products %}
+  			<tr>
+  				<td>{{ item.id }} </td>
+  				<td>{{ item.productname }} </td>
+  				{% if item.pieces <= 5 %}
+  					<td style="color:red">{{ item.pieces }}</td>
+  				{% endif %}
+  				{% if item.pieces > 5 %}
+  					<td>{{ item.pieces }}</td>
+  				{% endif %}
+  			</tr>
+  			{% endfor %}
+  		</table>
+  	</div>
+	
+	<div align="center">
+    <ul class="pagination">
+        {% if paginator.currentpage != 1 %}
+            <li> <a class="previous" href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::VIEW_VISITOR_SEARCH_PRODUCT_KEY'), {  'offset': paginator.currentpage-1 }) }}">Previous</a>
+        {% endif %}
+        {% for i in 1..paginator.numpages%}
+            {%  if(i==1 or i==paginator.numpages or i in paginator.range) %}
+                {% if i==paginator.currentpage %}
+                    <li><a class="active" href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::VIEW_VISITOR_SEARCH_PRODUCT_KEY'), {  'offset': i })}}">{{i}}</a></li>
+                {% else %}
+                <li><a href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::VIEW_VISITOR_SEARCH_PRODUCT_KEY'), { 'offset': i }) }}"> {{i}}</a></li>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+        {% if paginator.currentpage + 1 <= paginator.numpages %}
+        	<li> <a class="next" href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::VIEW_VISITOR_SEARCH_PRODUCT_KEY'), {  'offset': paginator.currentpage+1 }) }}">Next</a>
+        {% endif %}
+    </ul>
+</div>
+  	
+{% endblock %}

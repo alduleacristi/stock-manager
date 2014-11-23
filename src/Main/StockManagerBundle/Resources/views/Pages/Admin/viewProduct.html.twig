@@ -9,16 +9,33 @@
     		<tr>
   				<th>#</th>
   				<th>Product name</th>
+  				<th>Products in stock</th>
   			</tr>
   			{% for item in products %}
   			<tr>
   				<td>{{ item.id }} </td>
   				<td>{{ item.productname }} </td>
+  				{% if item.pieces <= 5 %}
+  					<td style="color:red">{{ item.pieces }}</td>
+  				{% endif %}
+  				{% if item.pieces > 5 %}
+  					<td>{{ item.pieces }}</td>
+  				{% endif %}
   				<td>
-  				<form action="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::INSERT_PRODUCT_INGREDIENT_KEY'), {  'product':item.id }) }}">
-  					<input type="submit" class="btn btn-default" style='background-color:#87BAE5' value="Insert ingredient"/>
+  				<form action="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::VIEW_PRODUCT_DETAIL_KEY'), {  'product':item.id }) }}">
+  					<input type="submit" class="btn btn-default" style='background-color:#87BAE5' value="View details"/>
   				</form>
-  			</td>
+  				</td>
+  				<td>
+  					<form action="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::DROP_PRODUCT_KEY'), {  'category':category, 'product':item.id, 'offset':paginator.currentpage }) }}">
+  						<input type="submit" class="btn btn-default" style='background-color:#87BAE5' value="Drop product"/>
+  					</form>
+  				</td>
+  				<td>
+  					<form action="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::UPDATE_STOCK_KEY'), {  'category':category, 'product':item.id, 'offset':paginator.currentpage }) }}">
+  						<input type="submit" class="btn btn-default" style='background-color:#87BAE5' value="Update stock"/>
+  					</form>
+  				</td>
   			</tr>
   			{% endfor %}
   		</table>

@@ -231,4 +231,40 @@ class User implements UserInterface, \Serializable
     			$this->password,
     	) = unserialize($serialized);
     }
+
+    /**
+     * Set username
+     *
+     * @param string $username
+     * @return User
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    /**
+     * Add roles
+     *
+     * @param \Main\StockManagerBundle\Entity\Role $roles
+     * @return User
+     */
+    public function addRole(\Main\StockManagerBundle\Entity\Role $roles)
+    {
+        $this->roles[] = $roles;
+
+        return $this;
+    }
+
+    /**
+     * Remove roles
+     *
+     * @param \Main\StockManagerBundle\Entity\Role $roles
+     */
+    public function removeRole(\Main\StockManagerBundle\Entity\Role $roles)
+    {
+        $this->roles->removeElement($roles);
+    }
 }
