@@ -1,10 +1,18 @@
 {% extends '::base.html.twig' %}
 
 {% block navbar %}
+<form class="navbar-form navbar-right" action="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::VIEW_VISITOR_SEARCH_PRODUCT_KEY'),{'offset':1}) }}" method="POST">
+	<input type="text" class="form-control" name="productName" placeholder="Search..." id="productName">
+	<input type="submit" class="btn btn-default" style='background-color:#87BAE5' value="Search product"/>
+</form> 
 {% if app.user %}
     <li><a href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::LOGOUT_KEY')) }}">Logout</a></li>
  {% else %}
    	<li><a href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::LOGIN_KEY')) }}">Login</a></li>
  {% endif %}
 	<li><a href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::ABOUT_KEY')) }}">About</a></li>
+{% endblock %}
+
+{% block sidebar_content %}
+	<li><a href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::VIEW_PRODUCTS_KEY')) }}">View products</a></li>
 {% endblock %}

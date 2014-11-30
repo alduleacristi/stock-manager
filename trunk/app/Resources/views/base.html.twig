@@ -51,9 +51,9 @@
 					<li><a href="#">Help</a></li> -->
 				</ul>
 				
-			<!--  	<form class="navbar-form navbar-right">
+			  	<form class="navbar-form navbar-right">
 					<input type="text" class="form-control" placeholder="Search...">
-				</form> -->
+				</form> 
 				{% endblock %}
 			</div>
 			
@@ -77,6 +77,16 @@
 	<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 		{% block page_title %}
 		<h1 class="page-header">Welcome to StockManager</h1>
+		{% endblock %}
+		
+		{% block messages %}
+			{% for flashMessage in app.session.flashbag.get("notice") %}
+				<div class="alert alert-info" role="alert">{{ flashMessage }}</div>
+			{% endfor %}
+			
+			{% for flashMessage in app.session.flashbag.get("error") %}
+				<div class="alert alert-danger" role="alert">{{ flashMessage }}</div>
+			{% endfor %}
 		{% endblock %}
 
 		{% block content %}
