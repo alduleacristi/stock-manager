@@ -18,20 +18,22 @@ class ProducerService {
 		return $this->em->getRepository ( 'MainStockManagerBundle:Producer' )->find ( $idProducer );
 	}
 	public function dropProducer($producer) {
+		if (! $producer) {
+			throw new \Exception( 'No product found' );
+		}
 		$this->em->remove ( $producer );
 		$this->em->flush ();
 	}
-	
-	public function updateProducer($producer){
-		$oldProducer = $this->getProducerById($producer->getId());
+	public function updateProducer($producer) {
+		$oldProducer = $this->getProducerById ( $producer->getId () );
 		
-		$oldProducer->setProducername($producer->getProducername());
-		$oldProducer->setAdress($producer->getAdress());
-		$oldProducer->setEmail($producer->getEmail());
-		$oldProducer->setUrl($producer->getUrl());
-		$oldProducer->setPhone($producer->getPhone());
+		$oldProducer->setProducername ( $producer->getProducername () );
+		$oldProducer->setAdress ( $producer->getAdress () );
+		$oldProducer->setEmail ( $producer->getEmail () );
+		$oldProducer->setUrl ( $producer->getUrl () );
+		$oldProducer->setPhone ( $producer->getPhone () );
 		
-		$this->em->flush();
+		$this->em->flush ();
 	}
 }
 ?>

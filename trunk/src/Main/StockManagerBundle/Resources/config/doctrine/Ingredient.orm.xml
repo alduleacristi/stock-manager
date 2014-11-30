@@ -8,6 +8,6 @@
       <generator strategy="IDENTITY"/>
     </id>
     <field name="ingredientname" type="string" column="ingredientName" length="15" nullable="false"/>
-    <many-to-many field="idproduct" target-entity="Product" mapped-by="idingredient"/>
+    <many-to-many field="idproduct" target-entity="Product" mapped-by="idingredient" cascade="persist"/>
   </entity>
 </doctrine-mapping>

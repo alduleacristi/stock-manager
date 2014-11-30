@@ -1,0 +1,28 @@
+{% extends '::admin.html.twig' %} {% block page_title %}
+<h1 class="page-header">Send a email to producer</h1>
+{% endblock %} {% block content %}
+<body>
+	<script type="text/javascript"
+		src="http://js.nicedit.com/nicEdit-latest.js"></script>
+	<script type="text/javascript">
+//<![CDATA[
+        bkLib.onDomLoaded(function() { nicEditors.allTextAreas() });
+  //]]>
+  </script>
+	<h4></h4>
+	<br />
+	<form class="edit-form"
+		action="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::SEND_ACTUAL_EMAIL_KEY'), {  'producer':producer.id }) }}"
+		method="post">
+		<b>To:</b><br /> <input name="to" class="form-control"
+			placeholder="To" readonly="true" value={{ producer.email }}
+			style="width: 800px"> <b>Subject:</b><br /> <input type="text"
+			name="subject" class="form-control" placeholder="Subject"
+			required="true" style="width: 800px"> <br />
+		<br /> <b>Message:</b><br />
+		<textarea name="message" style="width: 810px; height: 200px;"></textarea>
+		<button class="btn btn-primary" style="width: 810px;" type="submit"
+			name="create">Send message</button>
+	</form>
+</body>
+{% endblock %}

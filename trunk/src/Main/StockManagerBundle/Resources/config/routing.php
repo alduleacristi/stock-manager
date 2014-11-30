@@ -97,4 +97,11 @@ $collection->add(StockManagerRouting::UPDATE_STOCK_PROCESS_KEY, new Route(StockM
 		'_controller' => 'MainStockManagerBundle:Routing:updateStockProcess','offset'=>1
 )));
 
+$collection->add(StockManagerRouting::SEND_EMAIL_KEY, new Route(StockManagerRouting::SEND_EMAIL_URL, array(
+		'_controller' => 'MainStockManagerBundle:Routing:sendEmailToProducer'
+)));
+$collection->add(StockManagerRouting::SEND_ACTUAL_EMAIL_KEY, new Route(StockManagerRouting::SEND_ACTUAL_EMAIL_URL, array(
+		'_controller' => 'MainStockManagerBundle:Routing:sendActualEmailToProducer'
+)));
+
 return $collection;
