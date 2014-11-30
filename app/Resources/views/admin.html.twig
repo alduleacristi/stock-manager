@@ -6,13 +6,15 @@
 {% block navbar %}
 	<li><a href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::LOGOUT_KEY')) }}">Logout</a></li>
 {% endblock %}
-
 {% block sidebar_content %}
 	<li><a href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::INSERT_CATEGORY_KEY')) }}">Insert category</a></li>
 	<li><a href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::INSERT_PRODUCT_KEY')) }}">Insert product</a></li>
 	<li><a href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::INSERT_PRODUCER_KEY')) }}">Insert producer</a></li>
 	<li><a href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::INSERT_INGREDIENT_KEY')) }}">Insert ingredient</a></li>
+	<br/>
 	<li><a href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::VIEW_CATEGORY_KEY')) }}">View categorys</a></li>
 	<li><a href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::VIEW_PRODUCER_KEY')) }}">View producers</a></li>
 	<li><a href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::VIEW_INGREDIENTS_KEY')) }}">View ingredients</a></li>
+	<br/>
+	<li><a href="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::UPDATE_STOCK_PAGE_KEY')) }}">Update stock</a></li>
 {% endblock %}
