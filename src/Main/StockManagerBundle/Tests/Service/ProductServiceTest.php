@@ -1,101 +1,136 @@
 <?php
+
+namespace Main\StockManagerBundle\Entity;
+
+use Main\StockManagerBundle\Tests\TestCase;
+use Main\StockManagerBundle\Entity\Ingredient;
+use Main\StockManagerBundle\Entity\Producer;
+use Main\StockManagerBundle\Entity\Product;
 use Main\StockManagerBundle\Services\ProductService;
 
-class ProductServiceTest extends \PHPUnit_Framework_TestCase{
-	private $em;
+require_once dirname ( __DIR__ ) . '\Service\TestCase.php';
+class ProductServiceTest extends TestCase {
 	
-	private function mockIngredient(){
-		$ingredient = $this->getMock('Main\StockManagerBundle\Entity\Ingredient');
+	public function setUp() {
+		parent::setUp ();
+	}
+	public function testInsert() {
+		$productService = new ProductService($this->entityManager);
 		
-		return $ingredient;
+		$product = new Product();
+		$product->setProductname("Paine");
+		$product->setPrice(4.3);
+		$product->setAdition(10);
+		$product->setPieces(100);
+		
+		$productService->insertProduct($product);
+		$products = $productService->getAllProducts();
+		$this->assertCount(1,$products);
 	}
 	
-	private function mockProducer($producerName){
-		$producer = $this->getMock('Main\StockManagerBundle\Entity\Producer');
-		$producer->expects($this->any())
-				->method('getProducername')
-				->will($this->returnValue($producerName));
+	public function testGetById(){
+		$productService = new ProductService($this->entityManager);
 		
-		return $producer;
+		$product = new Product();
+		$product->setProductname("Paine");
+		$product->setPrice(4.3);
+		$product->setAdition(10);
+		$product->setPieces(100);
+		
+		$productService->insertProduct($product);
+		$aux= $productService->getProductById(1);
+		$this->assertNotNull($aux);
 	}
 	
-	private function mockProduct(){
-		$ingredients = new Doctrine\Common\Collections\ArrayCollection();
-		$ingredients->add($this->mockIngredient());
-		$ingredients->add($this->mockIngredient());
+	public function testDropProduct(){
+		$productService = new ProductService($this->entityManager);
 		
-		$producer = $this->mockProducer("Velpitar");
+		$ingredient = new Ingredient();
+		$ingredient->setIngredientname("Faina");
 		
-		$product = $this->getMock('Main\StockManagerBundle\Entity\Product');
-		$product->expects($this->any())
-				->method('getIdingredient')
-				->will($this->returnValue($ingredients));
-		$product->expects($this->any())
-				->method('getIdproducer')
-				->will($this->returnValue($producer));
-	
-		return $product;
+		$producer = new Producer();
+		$producer->setProducername("Velpitar");
+		
+		$product = new Product();
+		$product->setProductname("Paine");
+		$product->setPrice(4.3);
+		$product->setAdition(10);
+		$product->setPieces(100);
+		
+		$productService->insertProduct($product);
+		$productService->dropProduct($product);
+		$products = $productService->getAllProducts();
+		$this->assertCount(0,$products);
 	}
 	
-	private function mockRepository(){
-		$productRepository = $this->getMockBuilder('\Doctrine\ORM\EntityRepository')
-								  ->disableOriginalConstructor()
-								  ->getMock();
+	public function testUpdateStock(){
+		$productService = new ProductService($this->entityManager);
 		
-		$productRepository->expects($this->any())
-							->method('find')
-							->will($this->returnValue($this->mockProduct()));
-		$products = new Doctrine\Common\Collections\ArrayCollection();
-		$products->add($this->mockProduct());
-		$products->add($this->mockProduct());
-		$products->add($this->mockProduct());
-		$productRepository->expects($this->any())
-						  ->method('findAll')
-						  ->will($this->returnValue($products));
+		$product = new Product();
+		$product->setProductname("Paine");
+		$product->setPrice(4.3);
+		$product->setAdition(10);
+		$product->setPieces(100);
 		
-		return $productRepository;
+		$productService->insertProduct($product);
+		$aux= $productService->getProductById(1);
+		$this->assertEquals(100,$aux->getPieces());
+		
+		$product->setPieces(150);
+		$productService->updateStock($product);
+		$aux= $productService->getProductById(1);
+		$this->assertEquals(150,$aux->getPieces());
 	}
 	
-	private function mockEntityManager(){
-		$this->em = $this->getMockBuilder('Doctrine\ORM\EntityManager')
-							  ->disableOriginalConstructor()
-							  ->getMock();
+	public function testAddIngredient(){
+		$productService = new ProductService($this->entityManager);
 		
-		$this->em->expects($this->any())
-									  ->method('getRepository')
-									  ->will($this->returnValue($this->mockRepository()));
+		$product = new Product();
+		$product->setProductname("Paine");
+		$product->setPrice(4.3);
+		$product->setAdition(10);
+		$product->setPieces(100);
 		
-// 		$this->em->expects($this->any())
-// 				 ->method('persist')
-// 				 ->will($this->returnCallback(function(){
-// 				 	$products = new Doctrine\Common\Collections\ArrayCollection();
-// 				 	$products->add($this->mockProduct());
-// 				 	$products->add($this->mockProduct());
-// 				 	$products->add($this->mockProduct());
-// 				 	$products->add($this->mockProduct());
-				 	
-// 				 	return $products;
-// 				 }));
-// 		$mockEM->expects($this->any())
-// 		->method('flush')
-// 		->will($this->returnValue(null));
+		$ingredient = new Ingredient();
+		$ingredient->setIngredientname("Faina");
+		
+		$producer = new Producer();
+		$producer->setProducername("Velpitar");
+		
+		$productService->insertProduct($product);
+		$productService->addIngredient($product->getId(),$ingredient);
+		
+		$aux= $productService->getProductById(1);
+		$ingredients = $aux->getIdingredient();
+		$this->assertCount(1,$ingredients);
 	}
 	
+	public function testRemoveIngredient(){
+		$productService = new ProductService($this->entityManager);
 	
-	public function testGetAllProducts(){
-		$product = $this->mockProduct();
-		$this->assertCount(2, $product->getIdingredient());
-		$this->assertEquals("Velpitar", $product->getIdproducer()->getProducername());
+		$product = new Product();
+		$product->setProductname("Paine");
+		$product->setPrice(4.3);
+		$product->setAdition(10);
+		$product->setPieces(100);
+	
+		$ingredient = new Ingredient();
+		$ingredient->setIngredientname("Faina");
+	
+		$producer = new Producer();
+		$producer->setProducername("Velpitar");
+	
+		$productService->insertProduct($product);
+		$productService->addIngredient($product->getId(),$ingredient);
+	
+		$aux= $productService->getProductById(1);
+		$ingredients = $aux->getIdingredient();
+		$this->assertCount(1,$ingredients);
 		
-		$this->mockEntityManager();
-		$productService = new ProductService($this->em);
-		
-		$this->assertEquals($this->mockProduct(),$productService->getProductById(1));
-		$this->assertCount(2,$productService->getProductById(1)->getIdingredient());
-		
-		$this->assertCount(3,$productService->getAllProducts());
-		
-		//$this->assertCount(4,$productService->insertProduct($this->mockProduct()));
+		$productService->removeIngredient($product,$ingredient);
+		$aux= $productService->getProductById(1);
+		$ingredients = $aux->getIdingredient();
+		$this->assertCount(0,$ingredients);
 	}
 }
 ?>

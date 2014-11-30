@@ -2,6 +2,10 @@
 {% block page_title %}
 {% endblock %}
 {% block content %}
+	{% for flashMessage in app.session.flashbag.get("notice") %}
+		<div class="alert alert-info" role="alert">{{ flashMessage }}</div>
+	{% endfor %}
+
 	<div class="panel panel-default">
   		<div class="panel-heading">Producers</div>
   		
@@ -29,6 +33,11 @@
   				<td>
   					<form action="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::UPDATE_PRODUCER_KEY'), {  'producer':item.id }) }}">
   						<input type="submit" class="btn btn-default" style='background-color:#87BAE5' value="Update producer"/>
+  					</form>
+  				</td>
+  				<td>
+  					<form action="{{ path(constant('Main\\StockManagerBundle\\Common\\StockManagerRouting::SEND_EMAIL_KEY'), {  'producer':item.id }) }}">
+  						<input type="submit" class="btn btn-default" style='background-color:#87BAE5' value="Send email"/>
   					</form>
   				</td>
   			</tr>

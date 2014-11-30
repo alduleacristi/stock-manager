@@ -28,7 +28,10 @@
         <join-column name="idProducer" referenced-column-name="id"/>
       </join-columns>
     </many-to-one>
-    <many-to-many field="idingredient" target-entity="Ingredient" inversed-by="idproduct">
+    <many-to-many field="idingredient" target-entity="Ingredient" inversed-by="idproduct" cascade="persist">
+      <cascade>
+      	  <cascade-persist/>
+      </cascade>
       <join-table name="product_composition">
         <join-columns>
           <join-column name="idProduct" referenced-column-name="id"/>

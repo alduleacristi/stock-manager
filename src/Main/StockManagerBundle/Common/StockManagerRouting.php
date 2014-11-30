@@ -28,6 +28,8 @@ class StockManagerRouting{
 	const UPDATE_STOCK_URL = "/admin/update/stock/{product}";
 	const UPDATE_STOCK_PAGE_URL = "/admin/update/stock";
 	const UPDATE_STOCK_PROCESS_URL = "/admin/update/stock_process";
+	const SEND_EMAIL_URL = "/admin/send_email/{producer}";
+	const SEND_ACTUAL_EMAIL_URL = "/admin/send_actual_email/{producer}";
 
 	const HOME_KEY = "main_stock_manager_homepage";
 	const HOME_ADMIN_KEY = "main_stock_manager_admin_homepage";
@@ -55,6 +57,8 @@ class StockManagerRouting{
 	const UPDATE_STOCK_KEY = "main_stock_manager_update_stock";
 	const UPDATE_STOCK_PAGE_KEY = "main_stock_manager_update_stock_page";
 	const UPDATE_STOCK_PROCESS_KEY = "main_stock_manager_update_stock_process";
+	const SEND_EMAIL_KEY = "main_stock_manager_send_email";
+	const SEND_ACTUAL_EMAIL_KEY = "main_stock_manager_send_actual_email";
 	
 	const LOGIN_URL = "/login";
 	const LOGIN_KEY = "login";
